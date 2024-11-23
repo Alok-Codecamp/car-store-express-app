@@ -16,7 +16,19 @@ const car_model_1 = __importDefault(require("./car.model"));
 // create function for insert data into db.
 const createCarsDataIntoDb = (carData) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield car_model_1.default.create(carData);
+    return result;
+});
+const getAllCarsFromDb = (queryParams) => __awaiter(void 0, void 0, void 0, function* () {
+    if (queryParams) {
+        const result = yield car_model_1.default.find({ category: queryParams });
+        return result;
+    }
+    else {
+        const result = yield car_model_1.default.find();
+        return result;
+    }
 });
 exports.default = {
-    createCarsDataIntoDb
+    createCarsDataIntoDb,
+    getAllCarsFromDb
 };

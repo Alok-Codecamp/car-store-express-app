@@ -16,7 +16,7 @@ const car_service_1 = __importDefault(require("./car.service"));
 const createCarData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // destructure data from request body 
-        const { car: carData } = req.body;
+        const carData = req.body;
         const result = yield car_service_1.default.createCarsDataIntoDb(carData);
         res.status(200).json({
             succcess: true,
@@ -32,6 +32,35 @@ const createCarData = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
+const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { category } = req.query;
+        if (category) {
+            const result = yield car_service_1.default.getAllCarsFromDb(category);
+            res.status(200).json({
+                message: "Cars retrieved successfully",
+                status: true,
+                data: result
+            });
+        }
+        else {
+            const result = yield car_service_1.default.getAllCarsFromDb(null);
+            res.status(200).json({
+                message: "Cars retrieved successfully",
+                status: true,
+                data: result
+            });
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            error: err
+        });
+    }
+});
 exports.default = {
-    createCarData
+    createCarData,
+    getAllCars
 };
