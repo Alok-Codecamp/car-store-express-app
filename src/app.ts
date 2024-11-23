@@ -10,7 +10,7 @@ app.use(cors());
 
 // base URL path for carRoutes module
 
-app.use('/api/v1/cars', carRoutes)
+app.use('/api/cars', carRoutes)
 app.get('/', (req, res) => {
     res.send('car-store-server is running')
 })

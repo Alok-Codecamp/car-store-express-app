@@ -7,13 +7,15 @@ const createCarData = async (req: Request, res: Response) => {
     try {
         // destructure data from request body 
         const carData = req.body;
+        const currentDate = new Date().toLocaleDateString();
+        const carDataWithDate = { ...carData, createdAt: currentDate, updatedAt: currentDate }
 
 
-        const result = await carService.createCarsDataIntoDb(carData);
+        const result = await carService.createCarsDataIntoDb(carDataWithDate);
 
         res.status(200).json({
+            message: 'Car created successfully',
             succcess: true,
-            message: 'car data created successfully',
             data: result
         })
 

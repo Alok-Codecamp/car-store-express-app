@@ -43,21 +43,21 @@ const carSchema = new Schema<ICars>({
     inStock: {
         type: Boolean,
         default: true
+    },
+    createdAt: {
+        type: String
+    },
+    updatedAt: {
+        type: String
     }
-}, { toJSON: { virtuals: true } })
 
+}, { versionKey: false })
 
-
-carSchema.virtual('createdAt').get(function () {
-    return new Date().toLocaleString();
-})
-carSchema.virtual('updatedAt').get(function () {
-    return new Date().toLocaleString();
-})
 
 carSchema.set('toJSON', {
     virtuals: true,
     transform: (doc, ret) => {
+        delete ret.id
         const { _id, ...rest } = ret;
         return { _id, ...rest };
     }

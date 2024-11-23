@@ -4,7 +4,7 @@ import carController from './car.controller';
 
 const router = express.Router();
 
-router.post('/insertCarData', carController.createCarData);
+router.post('/create-car', carController.createCarData);
 
 router.get('/', carController.getAllCars);
 

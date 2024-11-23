@@ -48,17 +48,18 @@ const carSchema = new mongoose_1.Schema({
     inStock: {
         type: Boolean,
         default: true
+    },
+    createdAt: {
+        type: String
+    },
+    updatedAt: {
+        type: String
     }
-}, { toJSON: { virtuals: true } });
-carSchema.virtual('createdAt').get(function () {
-    return new Date().toLocaleString();
-});
-carSchema.virtual('updatedAt').get(function () {
-    return new Date().toLocaleString();
-});
+}, { versionKey: false });
 carSchema.set('toJSON', {
     virtuals: true,
     transform: (doc, ret) => {
+        delete ret.id;
         const { _id } = ret, rest = __rest(ret, ["_id"]);
         return Object.assign({ _id }, rest);
     }

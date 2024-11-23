@@ -17,10 +17,12 @@ const createCarData = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         // destructure data from request body 
         const carData = req.body;
-        const result = yield car_service_1.default.createCarsDataIntoDb(carData);
+        const currentDate = new Date().toLocaleDateString();
+        const carDataWithDate = Object.assign(Object.assign({}, carData), { createdAt: currentDate, updatedAt: currentDate });
+        const result = yield car_service_1.default.createCarsDataIntoDb(carDataWithDate);
         res.status(200).json({
+            message: 'Car created successfully',
             succcess: true,
-            message: 'car data created successfully',
             data: result
         });
     }
