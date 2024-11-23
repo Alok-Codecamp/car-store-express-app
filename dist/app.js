@@ -12,4 +12,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // base URL path for carRoutes module
 app.use('/api/v1/cars', cars_routes_1.carRoutes);
+app.get('/', (req, res) => {
+    res.send('car-store-server is running');
+});
 exports.default = app;
