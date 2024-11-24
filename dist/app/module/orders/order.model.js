@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const car_model_1 = __importDefault(require("../cars/car.model"));
-const zod_1 = require("zod");
 // define Schema for order
 const carOrderSchema = new mongoose_1.Schema({
     email: {
@@ -22,7 +21,7 @@ const carOrderSchema = new mongoose_1.Schema({
         required: true,
     },
     car: {
-        type: zod_1.string,
+        type: mongoose_1.Schema.ObjectId,
         ref: 'car',
         required: true
     },
