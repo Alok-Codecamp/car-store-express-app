@@ -4,15 +4,10 @@ import OrderModel from "./order.model"
 
 const createOrderInDb = async (orderData: IOrder) => {
 
-    try {
-        const result = await OrderModel.create(orderData);
-        if (!result) {
-            throw new Error('somthing went wrong')
-        }
-        return result;
-    } catch (err) {
-        return err
-    }
+
+    const result = await OrderModel.create(orderData);
+    return result;
+
 }
 
 const getOrderRevenue = async () => {

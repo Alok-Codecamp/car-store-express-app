@@ -51,7 +51,7 @@ const deleteCarDataInDB = (carId) => __awaiter(void 0, void 0, void 0, function*
             return result;
         }
         else {
-            return 'Car not found by given Id';
+            throw new Error("Car id doesn't match");
         }
     }
     catch (err) {

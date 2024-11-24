@@ -18,8 +18,8 @@ const carOrderSchema = new Schema<IOrder>({
     },
     quantity: {
         type: Number,
-        min: [1, 'minimun quantity should be 1'],
         required: true,
+        min: [1, 'minimun quantity should be 1'],
     },
     totalPrice: {
         type: Number,
@@ -48,8 +48,8 @@ carOrderSchema.pre('save', async function (next) {
         }
 
 
-    } catch (err) {
-        next(err as Error)
+    } catch (err: any) {
+        next(err)
     }
 })
 

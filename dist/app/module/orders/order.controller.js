@@ -17,12 +17,16 @@ const car_model_1 = __importDefault(require("../cars/car.model"));
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderData = req.body;
+        // if (orderData.quantity < 1) {
+        //     throw new Error('minimum order quantity should be 1')
+        // }
         if (orderData) {
             const orderdCar = yield car_model_1.default.findById(orderData.car);
             if ((orderdCar === null || orderdCar === void 0 ? void 0 : orderdCar.inStock) === false) {
                 throw new Error('Sorry! This car is out of stocke');
             }
             const result = yield order_service_1.default.createOrderInDb(orderData);
+            console.log(result);
             res.status(200).json({
                 message: 'order created successfully',
                 status: true,
@@ -31,10 +35,10 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
     catch (error) {
-        res.json({
-            message: 'order cannot be create',
-            status: false,
-            error: error instanceof Error ? error.message : 'unknown error'
+        res.status(500).json({
+            "message": error.message,
+            "success": false,
+            "error": error
         });
     }
 });

@@ -14,16 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_model_1 = __importDefault(require("./order.model"));
 const createOrderInDb = (orderData) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const result = yield order_model_1.default.create(orderData);
-        if (!result) {
-            throw new Error('somthing went wrong');
-        }
-        return result;
-    }
-    catch (err) {
-        return err;
-    }
+    const result = yield order_model_1.default.create(orderData);
+    return result;
 });
 const getOrderRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_model_1.default.aggregate([

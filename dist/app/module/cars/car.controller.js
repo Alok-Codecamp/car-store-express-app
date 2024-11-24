@@ -27,7 +27,7 @@ const createCarData = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         // const {name,erro}
         res.status(500).json({
-            "message": "Validation failed",
+            "message": err.message,
             "success": false,
             "error": err
         });

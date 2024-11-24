@@ -27,8 +27,8 @@ const carOrderSchema = new mongoose_1.Schema({
     },
     quantity: {
         type: Number,
-        min: [1, 'minimun quantity should be 1'],
         required: true,
+        min: [1, 'minimun quantity should be 1'],
     },
     totalPrice: {
         type: Number,

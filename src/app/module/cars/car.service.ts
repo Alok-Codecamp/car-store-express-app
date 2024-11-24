@@ -49,7 +49,7 @@ const deleteCarDataInDB = async (carId: string) => {
             return result
         }
         else {
-            return 'Car not found by given Id'
+            throw new Error("Car id doesn't match")
         }
 
     } catch (err) {
