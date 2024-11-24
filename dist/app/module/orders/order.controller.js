@@ -14,18 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_service_1 = __importDefault(require("./order.service"));
 const car_model_1 = __importDefault(require("../cars/car.model"));
+const order_zod_schemaValidation_1 = __importDefault(require("./order.zod.schemaValidation"));
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderData = req.body;
-        if (orderData.quantity < 1) {
-            throw new Error('Minimum Quantity should be 1');
-        }
         if (orderData) {
             const orderdCar = yield car_model_1.default.findById(orderData.car);
             if ((orderdCar === null || orderdCar === void 0 ? void 0 : orderdCar.inStock) === false) {
                 throw new Error('Sorry! This car is out of stocke');
             }
-            const result = yield order_service_1.default.createOrderInDb(orderData);
+            const zodParseData = order_zod_schemaValidation_1.default.parse(orderData);
+            const result = yield order_service_1.default.createOrderInDb(zodParseData);
             res.status(200).json({
                 message: 'order created successfully',
                 status: true,

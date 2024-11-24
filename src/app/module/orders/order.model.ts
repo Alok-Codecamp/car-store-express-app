@@ -1,6 +1,7 @@
 import { Error, model, Schema } from "mongoose";
 import { IOrder } from "./order.interface";
 import CarModel from "../cars/car.model";
+import { string } from "zod";
 
 
 // define Schema for order
@@ -11,7 +12,7 @@ const carOrderSchema = new Schema<IOrder>({
         required: true,
     },
     car: {
-        type: Schema.Types.ObjectId,
+        type: string,
         ref: 'car',
         required: true
     },

@@ -4,7 +4,7 @@ import { ObjectId } from "mongoose";
 
 export interface IOrder {
     email: string;
-    car: ObjectId;
+    car: String;
     quantity: number;
     totalPrice: number;
 }
