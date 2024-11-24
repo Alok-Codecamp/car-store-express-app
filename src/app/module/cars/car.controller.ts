@@ -17,6 +17,7 @@ const createCarData = async (req: Request, res: Response) => {
 
 
     } catch (err) {
+        // const {name,erro}
         res.status(500).json({
             "message": "Validation failed",
             "success": false,

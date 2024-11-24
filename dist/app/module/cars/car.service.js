@@ -18,9 +18,9 @@ const createCarsDataIntoDb = (carData) => __awaiter(void 0, void 0, void 0, func
     const result = yield car_model_1.default.create(carData);
     return result;
 });
-const getAllCarsFromDb = (carQuery) => __awaiter(void 0, void 0, void 0, function* () {
-    if (carQuery) {
-        const result = yield car_model_1.default.find({ category: carQuery });
+const getAllCarsFromDb = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
+    if (searchTerm) {
+        const result = yield car_model_1.default.find({ $or: [{ brand: searchTerm }, { model: searchTerm }, { category: searchTerm }] });
         return result;
     }
     else {
@@ -28,20 +28,40 @@ const getAllCarsFromDb = (carQuery) => __awaiter(void 0, void 0, void 0, functio
         return result;
     }
 });
-//  get specific car data find by id 
+//  get specific car data find by id
 const getspecificCarFromDb = (carIdparams) => __awaiter(void 0, void 0, void 0, function* () {
-    if (carIdparams) {
-        console.log(carIdparams);
-        const result = yield car_model_1.default.findOne({ _id: carIdparams });
+    const result = yield car_model_1.default.findById(carIdparams);
+    return result;
+});
+//  funtion for update specific data 
+const updateCarDataInDB = (carId, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield car_model_1.default.findByIdAndUpdate(carId, { $set: updateData }, { new: true });
+    if (result) {
         return result;
     }
     else {
-        const result = yield car_model_1.default.find();
-        return result;
+        throw new Error("Car id doesn't match");
+    }
+});
+// function for delete specific data 
+const deleteCarDataInDB = (carId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield car_model_1.default.findByIdAndDelete(carId);
+        if (result) {
+            return result;
+        }
+        else {
+            return 'Car not found by given Id';
+        }
+    }
+    catch (err) {
+        return err;
     }
 });
 exports.default = {
     createCarsDataIntoDb,
     getAllCarsFromDb,
-    getspecificCarFromDb
+    getspecificCarFromDb,
+    updateCarDataInDB,
+    deleteCarDataInDB
 };

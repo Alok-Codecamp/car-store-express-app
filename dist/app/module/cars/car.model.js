@@ -11,8 +11,8 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//defining Car schema 
 const mongoose_1 = require("mongoose");
+//defining Car schema 
 const carSchema = new mongoose_1.Schema({
     brand: {
         type: String,
@@ -29,6 +29,7 @@ const carSchema = new mongoose_1.Schema({
     price: {
         type: Number,
         required: true,
+        min: [1, 'Price must be a positive number']
     },
     category: {
         type: String,
@@ -43,7 +44,8 @@ const carSchema = new mongoose_1.Schema({
         maxlength: [100, 'Description cannot be more than 100 charecters']
     },
     quantity: {
-        type: Number
+        type: Number,
+        ref: 'order'
     },
     inStock: {
         type: Boolean,
@@ -55,14 +57,16 @@ const carSchema = new mongoose_1.Schema({
     updatedAt: {
         type: String
     }
-}, { versionKey: false });
+}, { versionKey: false, id: false, timestamps: true });
 carSchema.set('toJSON', {
     virtuals: true,
     transform: (doc, ret) => {
-        delete ret.id;
         const { _id } = ret, rest = __rest(ret, ["_id"]);
         return Object.assign({ _id }, rest);
     }
 });
+// carOrderSchema.pre('save', async function (next) {
+//     const order = OrderModel.findById()
+// })
 const CarModel = (0, mongoose_1.model)('cars', carSchema);
 exports.default = CarModel;

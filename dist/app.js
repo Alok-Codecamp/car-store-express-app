@@ -6,12 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const cars_routes_1 = require("./app/module/cars/cars.routes");
+const order_routes_1 = require("./app/module/orders/order.routes");
 const app = (0, express_1.default)();
 //  middleware setup
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // base URL path for carRoutes module
 app.use('/api/cars', cars_routes_1.carRoutes);
+app.use('/api/orders', order_routes_1.orderRoutes);
 app.get('/', (req, res) => {
     res.send('car-store-server is running');
 });

@@ -23,6 +23,7 @@ const carSchema = new Schema<ICars>({
     price: {
         type: Number,
         required: true,
+        min: [1, 'Price must be a positive number']
     },
     category: {
         type: String,
