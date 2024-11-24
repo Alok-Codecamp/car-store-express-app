@@ -3,6 +3,7 @@ import { IOrder } from "./order.interface";
 import CarModel from "../cars/car.model";
 
 
+// define Schema for order
 
 const carOrderSchema = new Schema<IOrder>({
     email: {
@@ -16,6 +17,7 @@ const carOrderSchema = new Schema<IOrder>({
     },
     quantity: {
         type: Number,
+        min: [1, 'minimun quantity should be 1'],
         required: true,
     },
     totalPrice: {
@@ -23,6 +25,8 @@ const carOrderSchema = new Schema<IOrder>({
     }
 }, { timestamps: true, versionKey: false, id: false })
 
+
+// use pre method 
 carOrderSchema.pre('save', async function (next) {
 
     try {
