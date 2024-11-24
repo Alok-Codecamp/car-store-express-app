@@ -9,9 +9,9 @@ const createCarsDataIntoDb = async (carData: ICars) => {
     return result;
 }
 
-const getAllCarsFromDb = async (queryParams: string | null) => {
-    if (queryParams) {
-        const result = await CarModel.find({ category: queryParams });
+const getAllCarsFromDb = async (searchTerm: string | null) => {
+    if (searchTerm) {
+        const result = await CarModel.find({ $or: [{ brand: searchTerm }, { model: searchTerm }, { category: searchTerm }] });
         return result;
     }
     else {
@@ -20,10 +20,51 @@ const getAllCarsFromDb = async (queryParams: string | null) => {
     }
 }
 
+//  get specific car data find by id
+
+const getspecificCarFromDb = async (carIdparams: string) => {
+    const result = await CarModel.findById(carIdparams);
+    return result;
+
+}
+
+//  funtion for update specific data 
+const updateCarDataInDB = async (carId: string, updateData: Partial<ICars>) => {
+
+    const result = await CarModel.findByIdAndUpdate(carId, { $set: updateData }, { new: true })
+    if (result) {
+        return result;
+    }
+    else {
+        throw new Error("Car id doesn't match")
+    }
+}
+
+// function for delete specific data 
+const deleteCarDataInDB = async (carId: string) => {
+
+    try {
+        const result = await CarModel.findByIdAndDelete(carId);
+        if (result) {
+            return result
+        }
+        else {
+            return 'Car not found by given Id'
+        }
+
+    } catch (err) {
+        return err
+    }
+
+
+}
 
 export default {
     createCarsDataIntoDb,
-    getAllCarsFromDb
+    getAllCarsFromDb,
+    getspecificCarFromDb,
+    updateCarDataInDB,
+    deleteCarDataInDB
 }
 
 

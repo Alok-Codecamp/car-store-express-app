@@ -1,9 +1,10 @@
+import OrderModel from "../orders/order.model";
 import { ICars } from "./cars.interface";
-
+import { model, Schema } from "mongoose";
 
 //defining Car schema 
 
-import mongoose, { model, Model, Schema } from "mongoose";
+
 
 const carSchema = new Schema<ICars>({
     brand: {
@@ -37,7 +38,8 @@ const carSchema = new Schema<ICars>({
     },
 
     quantity: {
-        type: Number
+        type: Number,
+        ref: 'order'
     },
 
     inStock: {
@@ -51,17 +53,26 @@ const carSchema = new Schema<ICars>({
         type: String
     }
 
-}, { versionKey: false })
+}, { versionKey: false, id: false, timestamps: true })
 
 
 carSchema.set('toJSON', {
     virtuals: true,
     transform: (doc, ret) => {
-        delete ret.id
         const { _id, ...rest } = ret;
         return { _id, ...rest };
     }
 })
+
+
+// carOrderSchema.pre('save', async function (next) {
+
+//     const order = OrderModel.findById()
+
+// })
+
+
+
 
 
 const CarModel = model('cars', carSchema);

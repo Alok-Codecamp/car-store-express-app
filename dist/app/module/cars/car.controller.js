@@ -62,6 +62,24 @@ const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
+const getspecificCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const paramId = req.params;
+        const result = car_service_1.default.getspecificCarFromDb(paramId);
+        res.status(200).json({
+            message: "Cars retrieved successfully",
+            status: true,
+            data: result
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            error: err
+        });
+    }
+});
 exports.default = {
     createCarData,
     getAllCars

@@ -1,17 +1,13 @@
 import { Request, Response } from "express";
 import carService from "./car.service";
-import { ICars } from "./cars.interface";
+
 
 
 const createCarData = async (req: Request, res: Response) => {
     try {
         // destructure data from request body 
         const carData = req.body;
-        const currentDate = new Date().toLocaleDateString();
-        const carDataWithDate = { ...carData, createdAt: currentDate, updatedAt: currentDate }
-
-
-        const result = await carService.createCarsDataIntoDb(carDataWithDate);
+        const result = await carService.createCarsDataIntoDb(carData);
 
         res.status(200).json({
             message: 'Car created successfully',
@@ -29,12 +25,18 @@ const createCarData = async (req: Request, res: Response) => {
     }
 }
 
+// define controller function for get all car data and also get car data by query params
+
 const getAllCars = async (req: Request, res: Response) => {
 
     try {
-        const { category } = req.query;
-        if (category) {
-            const result = await carService.getAllCarsFromDb(category as string)
+        const { searchTerm } = req.query;
+
+        console.log(searchTerm);
+
+
+        if (searchTerm) {
+            const result = await carService.getAllCarsFromDb(searchTerm as string)
             res.status(200).json({
                 message: "Cars retrieved successfully",
                 status: true,
@@ -42,6 +44,8 @@ const getAllCars = async (req: Request, res: Response) => {
 
             })
         }
+
+
         else {
             const result = await carService.getAllCarsFromDb(null);
             res.status(200).json({
@@ -62,7 +66,91 @@ const getAllCars = async (req: Request, res: Response) => {
 
 }
 
+// define controller function for get specific car data by id
+
+const getspecificCar = async (req: Request, res: Response) => {
+    try {
+        const { carId: carID } = req.params
+        const result = await carService.getspecificCarFromDb(carID)
+        res.status(200).json({
+            message: "Cars retrieved successfully",
+            status: true,
+            data: result
+
+        })
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            error: err
+
+        })
+    }
+}
+
+// define controller function for update car data 
+const updateCarData = async (req: Request, res: Response) => {
+    try {
+        const { carId: carID } = req.params;
+        const updatedata = req.body
+        // console.log(carID, updatedata);
+
+        const result = await carService.updateCarDataInDB(carID, updatedata)
+        res.status(200).json({
+            message: "Cars data updated successfully",
+            status: true,
+            data: result
+
+        })
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            error: err
+
+        })
+    }
+}
+// define controller function for delete car data
+const deleteCarData = async (req: Request, res: Response) => {
+    try {
+        const { carId: carID } = req.params;
+        console.log(carID);
+
+
+        const result = await carService.deleteCarDataInDB(carID)
+        if (result !== 'Car not found by given Id') {
+            res.status(200).json({
+                message: "Cars deleted successfully",
+                status: true,
+                data: {}
+
+            })
+        }
+        else {
+            res.status(404).json({
+                message: result,
+                status: false,
+
+            })
+        }
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            error: err
+
+        })
+    }
+}
+
+
+
+// export all controller function 
 export default {
     createCarData,
-    getAllCars
+    getAllCars,
+    getspecificCar,
+    updateCarData,
+    deleteCarData
 }

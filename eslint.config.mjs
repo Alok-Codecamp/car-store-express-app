@@ -17,7 +17,6 @@ export default [
       'prefer-const': 'error',
       'no-undef': 'error',
       'no-console': 'warn',
-      'no-implicit-globals': 'warn ',
     },
   },
 ];

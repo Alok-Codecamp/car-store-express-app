@@ -18,9 +18,21 @@ const createCarsDataIntoDb = (carData) => __awaiter(void 0, void 0, void 0, func
     const result = yield car_model_1.default.create(carData);
     return result;
 });
-const getAllCarsFromDb = (queryParams) => __awaiter(void 0, void 0, void 0, function* () {
-    if (queryParams) {
-        const result = yield car_model_1.default.find({ category: queryParams });
+const getAllCarsFromDb = (carQuery) => __awaiter(void 0, void 0, void 0, function* () {
+    if (carQuery) {
+        const result = yield car_model_1.default.find({ category: carQuery });
+        return result;
+    }
+    else {
+        const result = yield car_model_1.default.find();
+        return result;
+    }
+});
+//  get specific car data find by id 
+const getspecificCarFromDb = (carIdparams) => __awaiter(void 0, void 0, void 0, function* () {
+    if (carIdparams) {
+        console.log(carIdparams);
+        const result = yield car_model_1.default.findOne({ _id: carIdparams });
         return result;
     }
     else {
@@ -30,5 +42,6 @@ const getAllCarsFromDb = (queryParams) => __awaiter(void 0, void 0, void 0, func
 });
 exports.default = {
     createCarsDataIntoDb,
-    getAllCarsFromDb
+    getAllCarsFromDb,
+    getspecificCarFromDb
 };
