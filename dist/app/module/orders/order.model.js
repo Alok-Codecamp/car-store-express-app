@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const car_model_1 = __importDefault(require("../cars/car.model"));
+// define Schema for order
 const carOrderSchema = new mongoose_1.Schema({
     email: {
         type: String,
@@ -26,12 +27,14 @@ const carOrderSchema = new mongoose_1.Schema({
     },
     quantity: {
         type: Number,
+        min: [1, 'minimun quantity should be 1'],
         required: true,
     },
     totalPrice: {
         type: Number,
     }
 }, { timestamps: true, versionKey: false, id: false });
+// use pre method 
 carOrderSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
