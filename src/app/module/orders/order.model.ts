@@ -30,9 +30,7 @@ const carOrderSchema = new Schema<IOrder>({
 carOrderSchema.pre('save', async function (next) {
 
     try {
-        if (this.quantity < 1) {
-            throw new Error('Minimum Quantity should be 1')
-        }
+
         const car = await CarModel.findById(this.car)
         if (!car) {
             return next(new Error('car not found. please give a valied car id'))

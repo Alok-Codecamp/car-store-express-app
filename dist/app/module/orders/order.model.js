@@ -38,9 +38,6 @@ const carOrderSchema = new mongoose_1.Schema({
 carOrderSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (this.quantity < 1) {
-                throw new mongoose_1.Error('Minimum Quantity should be 1');
-            }
             const car = yield car_model_1.default.findById(this.car);
             if (!car) {
                 return next(new mongoose_1.Error('car not found. please give a valied car id'));

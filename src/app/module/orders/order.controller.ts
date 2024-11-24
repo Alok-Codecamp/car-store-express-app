@@ -7,6 +7,9 @@ const createOrder = async (req: Request, res: Response) => {
 
     try {
         const orderData: IOrder = req.body;
+        if (orderData.quantity < 1) {
+            throw new Error('Minimum Quantity should be 1')
+        }
         if (orderData) {
             const orderdCar = await CarModel.findById(orderData.car);
             if (orderdCar?.inStock === false) {
