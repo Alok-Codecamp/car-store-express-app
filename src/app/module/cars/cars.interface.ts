@@ -1,17 +1,16 @@
 
 //create union type for car category 
 
-type CarCategory = 'Sedan' | 'SUV' | 'Truck' | 'Coupe' | 'Convertible';
+type CarCategory = 'Sedan' | 'Hatchback' | 'SUV' | 'Crossover' | 'Coupe' | 'Convertible';
 
 export interface ICars {
     brand: string;
     model: string;
     year: number;
-    price: number;
+    price: string;
     category: CarCategory;
     description: string;
     quantity: number;
     inStock: boolean,
-    createdAt: string,
-    updatedAt: string
+    photoUrl: string;
 }

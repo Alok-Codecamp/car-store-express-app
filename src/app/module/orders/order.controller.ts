@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { IOrder } from "./order.interface";
 import orderService from "./order.service";
 import CarModel from "../cars/car.model";
+import asyncWrapper from "../../utils/asyncWraper";
+import responseSender from "../../utils/responseSender";
+import status from "http-status";
 
 
 const createOrder = async (req: Request, res: Response) => {
@@ -36,7 +39,16 @@ const createOrder = async (req: Request, res: Response) => {
 
 
 }
+const getOrders = asyncWrapper(async (req, res) => {
+    const allOrders = await orderService.getOrdersFromDb();
 
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Orders retrive successfully',
+        data: allOrders
+    })
+})
 const getRevenue = async (req: Request, res: Response) => {
 
     try {
@@ -61,5 +73,6 @@ const getRevenue = async (req: Request, res: Response) => {
 
 export default {
     createOrder,
-    getRevenue
+    getRevenue,
+    getOrders
 }

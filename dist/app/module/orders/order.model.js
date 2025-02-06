@@ -47,11 +47,11 @@ carOrderSchema.pre('save', function (next) {
             }
             this.totalPrice = car.price * this.quantity;
             const newCarQuantity = car.quantity - this.quantity;
-            yield car_model_1.default.findByIdAndUpdate(this.car, { quantity: newCarQuantity });
-            next();
             if (newCarQuantity <= 0) {
                 yield car_model_1.default.findByIdAndUpdate(this.car, { inStock: false });
             }
+            yield car_model_1.default.findByIdAndUpdate(this.car, { quantity: newCarQuantity });
+            next();
         }
         catch (err) {
             next(err);

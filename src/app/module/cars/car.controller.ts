@@ -4,6 +4,7 @@ import carService from "./car.service";
 
 
 const createCarData = async (req: Request, res: Response) => {
+
     try {
         // destructure data from request body 
         const carData = req.body;
@@ -32,9 +33,6 @@ const getAllCars = async (req: Request, res: Response) => {
 
     try {
         const { searchTerm } = req.query;
-
-        console.log(searchTerm);
-
 
         if (searchTerm) {
             const result = await carService.getAllCarsFromDb(searchTerm as string)

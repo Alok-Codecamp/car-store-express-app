@@ -10,6 +10,10 @@ const createOrderInDb = async (orderData: IOrder) => {
 
 }
 
+const getOrdersFromDb = async () => {
+
+}
+
 const getOrderRevenue = async () => {
 
     const result: any = await OrderModel.aggregate([
@@ -29,5 +33,7 @@ const getOrderRevenue = async () => {
 
 export default {
     createOrderInDb,
-    getOrderRevenue
+    getOrderRevenue,
+    getOrdersFromDb,
+
 }

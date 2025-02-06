@@ -37,7 +37,6 @@ const createCarData = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { searchTerm } = req.query;
-        console.log(searchTerm);
         if (searchTerm) {
             const result = yield car_service_1.default.getAllCarsFromDb(searchTerm);
             res.status(200).json({

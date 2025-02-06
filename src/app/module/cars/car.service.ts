@@ -4,8 +4,9 @@ import { ICars } from "./cars.interface"
 
 // create function for insert data into db.
 const createCarsDataIntoDb = async (carData: ICars) => {
-
+    // console.log(carData)
     const result = await CarModel.create(carData)
+    console.log('result:', result)
     return result;
 }
 

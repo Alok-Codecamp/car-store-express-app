@@ -41,18 +41,19 @@ carOrderSchema.pre('save', async function (next) {
         }
         this.totalPrice = car.price * this.quantity;
         const newCarQuantity = car.quantity - this.quantity;
-        await CarModel.findByIdAndUpdate(this.car, { quantity: newCarQuantity })
-        next();
+
         if (newCarQuantity <= 0) {
             await CarModel.findByIdAndUpdate(this.car, { inStock: false })
         }
+        await CarModel.findByIdAndUpdate(this.car, { quantity: newCarQuantity })
 
+        next();
 
     } catch (err: any) {
         next(err)
     }
 })
 
-const OrderModel = model('order', carOrderSchema)
+const OrderModel = model<IOrder>('order', carOrderSchema)
 
 export default OrderModel;
