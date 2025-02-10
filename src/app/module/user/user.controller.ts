@@ -17,7 +17,7 @@ const createUser = asyncWrapper(async (req, res) => {
 
 const getAllUser = asyncWrapper(async (req, res) => {
 
-    const allUser = await userService.getAllUserIntoDb();
+    const allUser = await userService.getAllUserFromDb();
     responseSender(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -27,9 +27,45 @@ const getAllUser = asyncWrapper(async (req, res) => {
 
 })
 
+const getUserByEmail = asyncWrapper(async (req, res) => {
+    console.log(req.params.userEmail)
+    const result = await userService.getUserByIdFromDb(req.params.userEmail)
+
+    responseSender(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'users retrive successfully.',
+        data: result,
+    })
+})
+const updateUser = asyncWrapper(async (req, res) => {
+
+    const result = await userService.updateUserFromDb(req.params.userEmail, req.body)
+
+    responseSender(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'users updated successfully.',
+        data: result,
+    })
+})
+
+const changePassword = asyncWrapper(async (req, res) => {
+
+    const result = await userService.changePasswordFromDb(req.params.userEmail, req.body)
+    responseSender(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'password changed.',
+        data: result,
+    })
+})
 
 
 export const userController = {
     createUser,
-    getAllUser
+    getAllUser,
+    getUserByEmail,
+    updateUser,
+    changePassword,
 }

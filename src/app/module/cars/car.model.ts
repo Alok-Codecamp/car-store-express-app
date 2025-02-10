@@ -54,6 +54,10 @@ const carSchema = new Schema<ICars>({
         type: Boolean,
         default: true
     },
+    photoUrl: {
+        type: String,
+        required: true
+    },
 
 }, { versionKey: false, id: false, timestamps: true })
 

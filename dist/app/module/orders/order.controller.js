@@ -14,6 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_service_1 = __importDefault(require("./order.service"));
 const car_model_1 = __importDefault(require("../cars/car.model"));
+const asyncWraper_1 = __importDefault(require("../../utils/asyncWraper"));
+const responseSender_1 = __importDefault(require("../../utils/responseSender"));
+const http_status_1 = __importDefault(require("http-status"));
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderData = req.body;
@@ -42,6 +45,15 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
+const getOrders = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const allOrders = yield order_service_1.default.getOrdersFromDb();
+    (0, responseSender_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Orders retrive successfully',
+        data: allOrders
+    });
+}));
 const getRevenue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield order_service_1.default.getOrderRevenue();
@@ -64,5 +76,6 @@ const getRevenue = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.default = {
     createOrder,
-    getRevenue
+    getRevenue,
+    getOrders
 };

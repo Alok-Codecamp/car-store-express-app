@@ -11,7 +11,13 @@ const createUserValidationSchema = z.object({
     role: z.enum(['admin', 'user']).optional(), // Replace this with your specific roles
     address: z.string().optional(),
 });
+const updateUserValidationSchema = z.object({
+    name: z.string().optional(),
+    email: z.string().email("Invalid email address!").optional(),
+    address: z.string().optional(),
+});
 
 export const userValidation = {
     createUserValidationSchema,
+    updateUserValidationSchema,
 };

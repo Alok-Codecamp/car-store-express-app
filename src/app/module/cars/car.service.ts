@@ -1,3 +1,6 @@
+import status from "http-status"
+import QueryBuilder from "../../queryBuilder/QueryBuilder"
+import AppError from "../../utils/AppError"
 import CarModel from "./car.model"
 import { ICars } from "./cars.interface"
 
@@ -10,15 +13,17 @@ const createCarsDataIntoDb = async (carData: ICars) => {
     return result;
 }
 
-const getAllCarsFromDb = async (searchTerm: string | null) => {
-    if (searchTerm) {
-        const result = await CarModel.find({ $or: [{ brand: searchTerm }, { model: searchTerm }, { category: searchTerm }] });
-        return result;
-    }
-    else {
-        const result = await CarModel.find();
-        return result;
-    }
+const getAllCarsFromDb = async (searchTerm: Record<string, unknown>) => {
+
+    const carQuery = new QueryBuilder(CarModel.find(), searchTerm).search(['brand', 'model', 'category']).filter().sort().fields().paginate();
+    const result = await carQuery.modelQuery;
+    const meta = await carQuery.countTotal();
+    return {
+        data: result,
+        meta,
+    };
+
+
 }
 
 //  get specific car data find by id
@@ -43,21 +48,13 @@ const updateCarDataInDB = async (carId: string, updateData: Partial<ICars>) => {
 
 // function for delete specific data 
 const deleteCarDataInDB = async (carId: string) => {
-
-    try {
-        const result = await CarModel.findByIdAndDelete(carId);
-        if (result) {
-            return result
-        }
-        else {
-            throw new Error("Car id doesn't match")
-        }
-
-    } catch (err) {
-        return err
+    const result = await CarModel.findByIdAndDelete(carId);
+    if (result) {
+        return result
     }
-
-
+    else {
+        throw new AppError(status.NOT_FOUND, "Car id doesn't match")
+    }
 }
 
 export default {

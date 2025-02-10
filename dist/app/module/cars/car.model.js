@@ -27,21 +27,27 @@ const carSchema = new mongoose_1.Schema({
         required: true,
     },
     price: {
-        type: Number,
-        required: true,
-        min: [1, 'Price must be a positive number']
+        type: String,
+        required: [true, 'price is required'],
     },
     category: {
         type: String,
         enum: {
-            values: ['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible'],
+            values: [
+                "Sedan",
+                "Hatchback",
+                "SUV",
+                "Crossover",
+                "Coupe",
+                "Convertible",
+            ],
             message: '{VALUES}   is not valied. Car categories should be one of this Sedan ,SUV , Truck,Coupe,Convertible'
         }
     },
     description: {
         type: String,
-        min: [30, 'minimum description should be 30 charecter'],
-        maxlength: [100, 'Description cannot be more than 100 charecters']
+        min: [10, 'minimum description should be 30 charecter'],
+        maxlength: [200, 'Description cannot be more than 100 charecters']
     },
     quantity: {
         type: Number,
@@ -51,12 +57,10 @@ const carSchema = new mongoose_1.Schema({
         type: Boolean,
         default: true
     },
-    createdAt: {
-        type: String
+    photoUrl: {
+        type: String,
+        required: true
     },
-    updatedAt: {
-        type: String
-    }
 }, { versionKey: false, id: false, timestamps: true });
 carSchema.set('toJSON', {
     virtuals: true,
@@ -65,8 +69,5 @@ carSchema.set('toJSON', {
         return Object.assign({ _id }, rest);
     }
 });
-// carOrderSchema.pre('save', async function (next) {
-//     const order = OrderModel.findById()
-// })
 const CarModel = (0, mongoose_1.model)('cars', carSchema);
 exports.default = CarModel;

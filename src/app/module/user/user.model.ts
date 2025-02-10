@@ -1,6 +1,5 @@
 import { CallbackError, model, Schema } from "mongoose";
 import { IUser, IUserModel } from "./user.interface";
-import { role } from "./user.constant";
 import bcrypt from 'bcrypt'
 import config from "../../config/config";
 export const UserSchema = new Schema<IUser, IUserModel>({
@@ -19,7 +18,7 @@ export const UserSchema = new Schema<IUser, IUserModel>({
     },
     role: {
         type: String,
-        enum: role,
+        enum: ['admin', 'user'],
         required: [true, 'role is required!'],
         default: 'user'
     },
@@ -41,6 +40,7 @@ UserSchema.pre('save', async function (next) {
         next(err)
     }
 })
+
 
 // delete password field  
 UserSchema.set('toJSON', {

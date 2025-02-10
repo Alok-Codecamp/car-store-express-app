@@ -5,16 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const cars_routes_1 = require("./app/module/cars/cars.routes");
-const order_routes_1 = require("./app/module/orders/order.routes");
+const routes_1 = __importDefault(require("./app/routes"));
+const globalErrorHandler_1 = __importDefault(require("./app/middleware/globalErrorHandler"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 //  middleware setup
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ origin: ['http://localhost:5173'], credentials: true }));
+app.use((0, cookie_parser_1.default)());
 // base URL path for carRoutes module
-app.use('/api/cars', cars_routes_1.carRoutes);
-app.use('/api/orders', order_routes_1.orderRoutes);
+app.use('/api', routes_1.default);
 app.get('/', (req, res) => {
     res.send('car-store-server is running');
 });
+// use global error handler
+app.use(globalErrorHandler_1.default);
 exports.default = app;

@@ -1,0 +1,1 @@
+export type TUpdateUser = { name?: string; email?: string; password?: string; address?: string }

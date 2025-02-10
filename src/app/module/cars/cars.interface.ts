@@ -11,6 +11,6 @@ export interface ICars {
     category: CarCategory;
     description: string;
     quantity: number;
-    inStock: boolean,
+    inStock: boolean;
     photoUrl: string;
 }

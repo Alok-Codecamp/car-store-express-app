@@ -9,7 +9,7 @@ const router = Router();
 
 
 router.post('/login', requestValidator(authValidations.loginValidationSchema), authController.login)
-router.post('/refresh', authController.refreshToken)
+router.post('/refresh-token', authController.refreshToken)
 
 
 

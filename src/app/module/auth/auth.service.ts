@@ -8,11 +8,9 @@ import config from "../../config/config";
 
 
 const login = async (payload: ILoginData) => {
-    console.log(payload)
     const isUserExist = await UserModel.isUserExistsByEmail(payload.email);
 
-
-
+    // check if user is missing 
     if (!isUserExist) {
         throw new AppError(status.NOT_FOUND, 'Invalied email !')
     }
@@ -20,7 +18,7 @@ const login = async (payload: ILoginData) => {
 
     const isPasswordMatched = await UserModel.isPasswordMatched(payload.password, isUserExist.password);
 
-    // check password match or not 
+    // check password is not match 
     if (!isPasswordMatched) {
         throw new AppError(status.BAD_REQUEST, 'Invalied password ')
     }

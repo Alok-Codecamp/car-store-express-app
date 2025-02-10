@@ -16,8 +16,11 @@ interface CustomRequest extends Request {
 
 export const authValidator = (...requiredRoles: TUserRole[]) => {
     return asyncWrapper(async (req, res, next) => {
+
+
         const token = req.headers.authorization;
 
+        // Check if the token is missing
         if (!token) {
             throw new AppError(status.UNAUTHORIZED, 'Unauthorized user!')
         }
@@ -27,10 +30,13 @@ export const authValidator = (...requiredRoles: TUserRole[]) => {
 
         const existingUser = await UserModel.isUserExistsByEmail(email);
 
+
+        //check if the user is missing
         if (!existingUser) {
             throw new AppError(status.NOT_ACCEPTABLE, 'User not found!')
         }
-        console.log(role)
+
+
         if (requiredRoles && !requiredRoles.includes(role)) {
             throw new AppError(status.NOT_ACCEPTABLE, `you are unauthorized. please login!`)
         }
