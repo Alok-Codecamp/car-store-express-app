@@ -20,10 +20,8 @@ const getAllCarsFromDb = async (searchTerm: Record<string, unknown>) => {
     const meta = await carQuery.countTotal();
     return {
         data: result,
-        meta,
+        meta: meta,
     };
-
-
 }
 
 //  get specific car data find by id

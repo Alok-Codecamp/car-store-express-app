@@ -1,4 +1,6 @@
+import { json } from "express";
 import { FilterQuery, Query } from "mongoose";
+import { object } from "zod";
 
 
 class QueryBuilder<T> {
@@ -30,8 +32,24 @@ class QueryBuilder<T> {
         excludeFildes.forEach((field) => {
             delete queryObj[field]
         })
-        this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>)
+        let min;
+        let max;
+        if (queryObj.price) {
+            const parsedPrice = JSON.parse(queryObj.price as string) as Record<string, string>;
 
+            min = Number(parsedPrice.$gte);
+            max = Number(parsedPrice.$lte);
+
+            delete queryObj['price'];
+        }
+        console.log(queryObj)
+        this.modelQuery = this.modelQuery.find({
+            $and: [
+                { price: { $gte: min, $lte: max } },
+                { ...queryObj }
+            ]
+        })
+        // queryObj as FilterQuery<T>
         return this;
     }
 

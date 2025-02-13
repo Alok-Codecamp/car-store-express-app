@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import carService from "./car.service";
 import asyncWrapper from "../../utils/asyncWraper";
-import QueryBuilder from "../../queryBuilder/QueryBuilder";
-import CarModel from "./car.model";
-import responseSender from "../../utils/responseSender";
+import responseSender, { TMeta } from "../../utils/responseSender";
 import status from "http-status";
+import { ICars } from "./cars.interface";
 
 
 
@@ -36,16 +35,15 @@ const createCarData = async (req: Request, res: Response) => {
 
 const getAllCars = asyncWrapper(async (req: Request, res: Response) => {
 
-
+    // console.log(req.params, req.query) 
     const search = req.query;
-    const result = await carService.getAllCarsFromDb(search);
+    const result: { data: ICars[]; meta: TMeta } = await carService.getAllCarsFromDb(search);
+
     responseSender(res, {
         statusCode: status.OK,
         success: true,
         message: 'car retrive successfullly',
-        meta: result.meta,
-        data: result.data
-
+        ...result
     })
 
 })
@@ -101,24 +99,7 @@ const deleteCarData = asyncWrapper(async (req: Request, res: Response) => {
     const { carId: carID } = req.params;
     console.log(carID);
 
-
     const result = await carService.deleteCarDataInDB(carID)
-    // if (result !== 'Car not found by given Id') {
-    //     res.status(200).json({
-    //         message: "Cars deleted successfully",
-    //         status: true,
-    //         data: {}
-
-    //     })
-    // }
-    // else {
-    //     res.status(404).json({
-    //         message: result,
-    //         status: false,
-
-    //     })
-    // }
-
     responseSender(res, {
         statusCode: status.OK,
         success: true,
