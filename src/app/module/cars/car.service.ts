@@ -3,6 +3,7 @@ import QueryBuilder from "../../queryBuilder/QueryBuilder"
 import AppError from "../../utils/AppError"
 import CarModel from "./car.model"
 import { ICars } from "./cars.interface"
+import { CLIENT_RENEG_WINDOW } from "tls"
 
 
 // create function for insert data into db.
@@ -14,9 +15,10 @@ const createCarsDataIntoDb = async (carData: ICars) => {
 }
 
 const getAllCarsFromDb = async (searchTerm: Record<string, unknown>) => {
-
+    console.log(searchTerm)
     const carQuery = new QueryBuilder(CarModel.find(), searchTerm).search(['brand', 'model', 'category']).filter().sort().fields().paginate();
     const result = await carQuery.modelQuery;
+
     const meta = await carQuery.countTotal();
     return {
         data: result,

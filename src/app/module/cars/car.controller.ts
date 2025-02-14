@@ -97,7 +97,7 @@ const updateCarData = async (req: Request, res: Response) => {
 const deleteCarData = asyncWrapper(async (req: Request, res: Response) => {
 
     const { carId: carID } = req.params;
-    console.log(carID);
+
 
     const result = await carService.deleteCarDataInDB(carID)
     responseSender(res, {

@@ -1,6 +1,6 @@
-import { json } from "express";
 import { FilterQuery, Query } from "mongoose";
-import { object } from "zod";
+
+
 
 
 class QueryBuilder<T> {
@@ -13,12 +13,12 @@ class QueryBuilder<T> {
     }
 
     search(searchAbleFields: string[]) {
-        const search = this.query.search as string;
+        const search = this.query.search;
 
         if (search) {
             this.modelQuery = this.modelQuery.find({
                 $or: searchAbleFields.map((field) => ({
-                    [field]: { $regex: search, $option: 'i' }
+                    [field]: { $regex: search, $options: 'i' }
                 }) as FilterQuery<T>)
             })
         }
@@ -35,20 +35,22 @@ class QueryBuilder<T> {
         let min;
         let max;
         if (queryObj.price) {
-            const parsedPrice = JSON.parse(queryObj.price as string) as Record<string, string>;
-
-            min = Number(parsedPrice.$gte);
-            max = Number(parsedPrice.$lte);
-
+            const pObj = JSON.parse(queryObj.price as string);
+            min = Number(pObj.min);
+            max = Number(pObj.max);
             delete queryObj['price'];
+            console.log(queryObj)
+            this.modelQuery = this.modelQuery.find({
+                $and: [
+                    { price: { $gte: min, $lte: max } },
+                    { ...queryObj }
+                ]
+            })
+        } else {
+            console.log(queryObj)
+            this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>)
+
         }
-        console.log(queryObj)
-        this.modelQuery = this.modelQuery.find({
-            $and: [
-                { price: { $gte: min, $lte: max } },
-                { ...queryObj }
-            ]
-        })
         // queryObj as FilterQuery<T>
         return this;
     }
@@ -65,7 +67,7 @@ class QueryBuilder<T> {
     paginate() {
         const page = Number(this.query?.page) || 1;
         const limit = Number(this.query.limit) || 10;
-        let skip = (page - 1) * limit;
+        const skip = (page - 1) * limit;
         this.modelQuery = this.modelQuery.skip(skip).limit(limit);
         return this;
     }
