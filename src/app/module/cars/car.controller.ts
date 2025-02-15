@@ -4,32 +4,34 @@ import asyncWrapper from "../../utils/asyncWraper";
 import responseSender, { TMeta } from "../../utils/responseSender";
 import status from "http-status";
 import { ICars } from "./cars.interface";
+import CarModel from "./car.model";
+import AppError from "../../utils/AppError";
 
 
 
-const createCarData = async (req: Request, res: Response) => {
-
-    try {
-        // destructure data from request body 
-        const carData = req.body;
-        const result = await carService.createCarsDataIntoDb(carData);
-
-        res.status(200).json({
-            message: 'Car created successfully',
-            succcess: true,
-            data: result
-        })
+const createCarData = asyncWrapper(async (req: Request, res: Response) => {
 
 
-    } catch (err: any) {
-        // const {name,erro}
-        res.status(500).json({
-            "message": err.message,
-            "success": false,
-            "error": err
-        })
+    // destructure data from request body 
+    const carData = req.body;
+    const isCarExists = await CarModel.findOne({ model: carData.model });
+    if (isCarExists) {
+        throw new AppError(status.CONFLICT, 'This car already exists!')
     }
-}
+    const result = await carService.createCarsDataIntoDb(carData);
+
+
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'car retrive successfully',
+        data: result,
+
+
+    })
+
+
+})
 
 // define controller function for get all car data and also get car data by query params
 
@@ -50,49 +52,44 @@ const getAllCars = asyncWrapper(async (req: Request, res: Response) => {
 
 // define controller function for get specific car data by id
 
-const getspecificCar = async (req: Request, res: Response) => {
-    try {
-        const { carId: carID } = req.params
-        const result = await carService.getspecificCarFromDb(carID)
-        res.status(200).json({
-            message: "Cars retrieved successfully",
-            status: true,
-            data: result
+const getspecificCar = asyncWrapper(async (req: Request, res: Response) => {
 
-        })
-    } catch (err: any) {
-        res.status(500).json({
-            success: false,
-            message: err.message,
-            error: err
+    const { carId: carID } = req.params
+    const result = await carService.getspecificCarFromDb(carID)
+    // res.status(200).json({
+    //     message: "Cars retrieved successfully",
+    //     status: true,
+    //     data: result
 
-        })
-    }
-}
+    // })
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'car retrive successfully',
+        data: result,
+
+
+    })
+})
 
 // define controller function for update car data 
-const updateCarData = async (req: Request, res: Response) => {
-    try {
-        const { carId: carID } = req.params;
-        const updatedata = req.body
-        // console.log(carID, updatedata);
+const updateCarData = asyncWrapper(async (req: Request, res: Response) => {
 
-        const result = await carService.updateCarDataInDB(carID, updatedata)
-        res.status(200).json({
-            message: "Cars data updated successfully",
-            status: true,
-            data: result
+    const { carId: carID } = req.params;
+    const updatedata = req.body
+    // console.log(carID, updatedata);
 
-        })
-    } catch (err: any) {
-        res.status(500).json({
-            success: false,
-            message: err.message,
-            error: err
+    const result = await carService.updateCarDataInDB(carID, updatedata)
+    res.status(200).json({
+        message: "Cars data updated successfully",
+        status: true,
+        data: result
 
-        })
-    }
-}
+    })
+})
+
+
+
 // define controller function for delete car data
 const deleteCarData = asyncWrapper(async (req: Request, res: Response) => {
 

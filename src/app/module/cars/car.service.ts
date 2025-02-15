@@ -3,7 +3,7 @@ import QueryBuilder from "../../queryBuilder/QueryBuilder"
 import AppError from "../../utils/AppError"
 import CarModel from "./car.model"
 import { ICars } from "./cars.interface"
-import { CLIENT_RENEG_WINDOW } from "tls"
+
 
 
 // create function for insert data into db.
@@ -48,13 +48,24 @@ const updateCarDataInDB = async (carId: string, updateData: Partial<ICars>) => {
 
 // function for delete specific data 
 const deleteCarDataInDB = async (carId: string) => {
-    const result = await CarModel.findByIdAndDelete(carId);
-    if (result) {
-        return result
+    const isCarExists = await CarModel.findById(carId);
+    if (!isCarExists) {
+        throw new AppError(status.NOT_FOUND, 'Car not Found')
     }
-    else {
-        throw new AppError(status.NOT_FOUND, "Car id doesn't match")
+    if (isCarExists.inStock === false) {
+        throw new AppError(status.NOT_ACCEPTABLE, 'Car is out of stock')
     }
+    if (isCarExists.quantity === Number(0)) {
+        throw new AppError(status.NOT_ACCEPTABLE, 'quantity less then one')
+    }
+    if (isCarExists.quantity === Number(1)) {
+        const result = await CarModel.findByIdAndUpdate(carId, { quantity: 0, inStock: 'false' });
+        return result;
+    }
+
+    const result = await CarModel.findByIdAndUpdate(carId, { quantity: isCarExists?.quantity - 1 });
+
+    return result;
 }
 
 export default {
