@@ -23,10 +23,11 @@ const responseSender = <T>(res: Response, data: Tresponse<T>) => {
 
 
     res.status(data.statusCode).json({
+        statusCode: data.statusCode,
         success: data.success,
         message: data.message,
         meta: data.meta,
-        data
+        data: data.data
     })
 }
 

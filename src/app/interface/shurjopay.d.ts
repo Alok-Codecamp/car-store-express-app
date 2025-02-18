@@ -7,7 +7,6 @@ declare module "shurjopay" {
         merchant_password: string;
         merchant_key_prefix: string;
         return_url: string;
-
         readonly token_url: string;
         readonly verification_url: string;
         readonly payment_status_url: string;
@@ -35,7 +34,7 @@ declare module "shurjopay" {
         customer_phone: string; // Phone number of the customer making payment (Mandatory)
         customer_city: string; // City of the customer making payment (Mandatory)
         customer_post_code?: string; // Postal code of the customer making payment (Optional)
-        client_ip?: string; // IP address of the customer making payment (Optional)
+        client_ip: string; // IP address of the customer making payment(mandatory)
         discount_amount?: number; // Total amount of discount applied to payment (Optional)
         disc_percent?: number; // Total percentage of discount applied to payment (Optional)
         customer_state?: string; // State of the customer making payment (Optional)

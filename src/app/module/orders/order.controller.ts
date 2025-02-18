@@ -14,7 +14,6 @@ const createOrder = asyncWrapper(async (req: Request, res: Response) => {
 
     const order = await orderService.createOrderInDb(user, orderData, req.ip!, res);
 
-
     responseSender(res, {
         statusCode: status.OK,
         success: true,
@@ -23,6 +22,23 @@ const createOrder = asyncWrapper(async (req: Request, res: Response) => {
     })
 
 })
+
+const verifyPayment = asyncWrapper(async (req, res) => {
+
+    const { order_id } = req.query;
+
+    const paymentVericationResponse = await orderService.verifyPaymentFromShurjoPay(order_id as string);
+
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Orderd veryfied.',
+        data: paymentVericationResponse
+    })
+})
+
+
+
 const getOrders = asyncWrapper(async (req, res) => {
     const allOrders = await orderService.getOrdersFromDb();
 
@@ -58,5 +74,6 @@ const getRevenue = async (req: Request, res: Response) => {
 export default {
     createOrder,
     getRevenue,
-    getOrders
+    getOrders,
+    verifyPayment,
 }

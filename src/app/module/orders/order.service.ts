@@ -33,33 +33,54 @@ const createOrderInDb = async (requestedUser: JwtPayload, payload: { cars: { car
         totalPrice,
 
     }
-    const order = await OrderModel.create(orderData);
+    let order = await OrderModel.create(orderData);
 
     // payment intigration 
 
     const shurjopayPayload = {
-        amount: 1500, // Example amount
-        order_id: "ORDER12345", // Must be generated dynamically
+        amount: totalPrice, // Example amount
+        order_id: order._id,
         currency: "BDT",
-        customer_name: "John Doe",
-        customer_address: "123 Main Street, Dhaka",
-        customer_email: "johndoe@example.com",
-        customer_phone: "017XXXXXXXX",
-        customer_city: "Dhaka"
+        customer_name: user.name,
+        customer_address: "Rajshahi",
+        customer_email: user.email,
+        customer_phone: "N/A",
+        customer_city: "N/A",
+        client_ip,
+
 
     }
 
     const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
 
-
-
+    if (payment?.transactionStatus) {
+        await OrderModel.findByIdAndUpdate(order._id, { transaction: { id: payment.sp_order_id, transactionStatus: payment.transactionStatus } })
+    }
     return { order, payment };
-
-
 }
 
-const getOrdersFromDb = async () => {
+const verifyPaymentFromShurjoPay = async (order_id: string) => {
 
+    const verifiedPayment = await orderUtils.verifyPaymentAsync(order_id);
+
+    if (verifiedPayment.length) {
+        await OrderModel.findOneAndUpdate({ "transaction.id": order_id }, {
+            "transaction.bank_status": verifiedPayment[0].bank_status,
+            "transaction.sp_code": verifiedPayment[0].sp_code,
+            "transaction.sp_message": verifiedPayment[0].sp_message,
+            "transaction.method": verifiedPayment[0].method,
+            "transaction.date_time": verifiedPayment[0].date_time,
+            status: verifiedPayment[0].bank_status == "Success" ? "Paid" : verifiedPayment[0].bank_status == "Faild" ? "Pending" : verifiedPayment[0].bank_status == "Cancel" ? "Cancelled" : "Pending"
+        })
+    }
+    return verifiedPayment;
+}
+
+
+
+const getOrdersFromDb = async () => {
+    const orders = await OrderModel.find();
+    return orders;
 }
 
 const getOrderRevenue = async () => {
@@ -83,5 +104,6 @@ export default {
     createOrderInDb,
     getOrderRevenue,
     getOrdersFromDb,
+    verifyPaymentFromShurjoPay,
 
 }

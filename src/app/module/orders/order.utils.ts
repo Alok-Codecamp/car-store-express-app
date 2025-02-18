@@ -12,8 +12,6 @@ shurjopay.config(
     config.sp_return_url!
 );
 
-// console.log(shurjopay);
-
 const makePaymentAsync = async (
     paymentPayload: any
 ): Promise<PaymentResponse> => {
@@ -26,8 +24,6 @@ const makePaymentAsync = async (
     });
 };
 
-
-
 const verifyPaymentAsync = (
     order_id: string
 ): Promise<VerificationResponse[]> => {
@@ -39,6 +35,7 @@ const verifyPaymentAsync = (
         );
     });
 };
+
 
 export const orderUtils = {
     makePaymentAsync,

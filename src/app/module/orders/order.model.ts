@@ -29,6 +29,16 @@ const carOrderSchema = new Schema<IOrder>({
     totalPrice: {
         type: Number,
     },
+    transaction: {
+        id: { type: String },
+        transactionStatus: { type: String },
+        bank_status: { type: String },
+        sp_code: { type: String },
+        sp_message: { type: String },
+        method: { type: String },
+        date_time: { type: String },
+
+    },
     status: {
         type: String,
         enum: ["Pending", "Paid", "Shipped", "Completed", "Cancelled"],
