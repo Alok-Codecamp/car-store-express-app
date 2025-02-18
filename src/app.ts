@@ -1,7 +1,5 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import { carRoutes } from './app/module/cars/cars.routes';
-import { orderRoutes } from './app/module/orders/order.routes';
 import router from './app/routes';
 import globalErrorhandler from './app/middleware/globalErrorHandler';
 import cookieParser from "cookie-parser";

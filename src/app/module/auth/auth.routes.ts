@@ -11,6 +11,6 @@ const router = Router();
 router.post('/login', requestValidator(authValidations.loginValidationSchema), authController.login)
 router.post('/refresh-token', authController.refreshToken)
 
-
-
+router.post('/forget-password', requestValidator(authValidations.forgetPasswordValidationSchema), authController.forgetPassword)
+router.post('/reset-password', requestValidator(authValidations.resetPasswordValidationSchema), authController.resetPassword)
 export const authRoutes = router;

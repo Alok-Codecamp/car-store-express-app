@@ -3,8 +3,13 @@ import { ObjectId } from "mongoose";
 
 
 export interface IOrder {
-    email: string;
-    car: ObjectId;
-    quantity: number;
+    user: ObjectId;
+    cars: {
+        car: ObjectId;
+        quantity: number;
+    }[];
+    status: "Pending" | "Paid" | "Shipped" | "Completed" | "Cancelled";
     totalPrice: number;
+    orderDate: Date;
+    deliveryDate: Date;
 }

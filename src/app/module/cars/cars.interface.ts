@@ -7,7 +7,7 @@ export interface ICars {
     brand: string;
     model: string;
     year: number;
-    price: string;
+    price: number;
     category: CarCategory;
     description: string;
     quantity: number;

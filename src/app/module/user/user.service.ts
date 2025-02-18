@@ -5,6 +5,7 @@ import { UserModel } from "./user.model";
 import status from "http-status";
 import bcrypt from 'bcrypt'
 import config from "../../config/config";
+import { verifyToken } from "../auth/auth.utils";
 
 const createUserIntoDb = async (payload: IUser) => {
 
@@ -63,6 +64,8 @@ const changePasswordFromDb = async (userEmail: string, data: { oldPassword: stri
     const result = await UserModel.findOneAndUpdate({ email: userEmail }, { password: data.newPassword })
     return result;
 }
+
+
 
 export const userService = {
     createUserIntoDb,

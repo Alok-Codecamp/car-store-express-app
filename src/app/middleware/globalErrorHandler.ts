@@ -83,7 +83,7 @@ const globalErrorhandler = (err: any, req: Request, res: Response, next: NextFun
 
 
 
-    return res.status(statusCode).json({
+    res.status(statusCode).json({
         success: false,
         message,
         errorSources,

@@ -1,4 +1,4 @@
-import OrderModel from "../orders/order.model";
+
 import { ICars } from "./cars.interface";
 import { model, Schema } from "mongoose";
 
@@ -21,7 +21,7 @@ const carSchema = new Schema<ICars>({
         required: true,
     },
     price: {
-        type: String,
+        type: Number,
         required: [true, 'price is required'],
 
     },
@@ -35,6 +35,7 @@ const carSchema = new Schema<ICars>({
                 "Crossover",
                 "Coupe",
                 "Convertible",
+                "Sport"
             ],
             message: '{VALUES}   is not valied. Car categories should be one of this Sedan ,SUV , Truck,Coupe,Convertible'
         }

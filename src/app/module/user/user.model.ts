@@ -1,4 +1,4 @@
-import { CallbackError, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { IUser, IUserModel } from "./user.interface";
 import bcrypt from 'bcrypt'
 import config from "../../config/config";
@@ -24,6 +24,12 @@ export const UserSchema = new Schema<IUser, IUserModel>({
     },
     address: {
         type: String,
+    },
+    status: {
+        type: String,
+        enum: ["Active", "Blocked"],
+        required: true,
+        default: "Active"
     }
 }, { timestamps: true, versionKey: false })
 

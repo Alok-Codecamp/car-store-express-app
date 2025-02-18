@@ -44,8 +44,37 @@ const refreshToken = asyncWrapper(async (req, res) => {
         data: result
     })
 })
+const forgetPassword = asyncWrapper(async (req, res) => {
+    const userEmail = req.body?.email;
+
+    const result = await authServices.forgetPassword(userEmail);
+
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'check email for reset password',
+        data: result
+    })
+
+})
+
+const resetPassword = asyncWrapper(async (req, res) => {
+    const token = req.headers.authorization
+    const result = await authServices.resetPassword(req.body, token as string);
+
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'password reset successfully',
+        data: result
+    })
+
+})
+
 
 export const authController = {
     login,
-    refreshToken
+    refreshToken,
+    forgetPassword,
+    resetPassword
 }

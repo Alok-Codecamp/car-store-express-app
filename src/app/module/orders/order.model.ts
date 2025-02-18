@@ -1,58 +1,80 @@
-import { Error, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { IOrder } from "./order.interface";
-import CarModel from "../cars/car.model";
+
 
 
 
 // define Schema for order
 
 const carOrderSchema = new Schema<IOrder>({
-    email: {
-        type: String,
-        required: true,
-    },
-    car: {
+    user: {
         type: Schema.ObjectId,
-        ref: 'car',
-        required: true
-    },
-    quantity: {
-        type: Number,
+        ref: 'user',
         required: true,
-        min: [1, 'minimun quantity should be 1'],
     },
+    cars: [
+        {
+            car: {
+                type: Schema.ObjectId,
+                ref: 'cars',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                min: [1, 'minimun quantity should be 1'],
+            },
+        }
+    ],
     totalPrice: {
         type: Number,
+    },
+    status: {
+        type: String,
+        enum: ["Pending", "Paid", "Shipped", "Completed", "Cancelled"],
+        default: "Pending"
+    },
+    orderDate: {
+        type: Date,
+        default: () => new Date()
+    },
+    deliveryDate: {
+        type: Date,
+        default: () => {
+            const date = new Date();
+            date.setDate(date.getDate() + 5)
+            return date;
+        }
     }
-}, { timestamps: true, versionKey: false, id: false })
+}, { timestamps: true, versionKey: false })
 
 
 // use pre method 
-carOrderSchema.pre('save', async function (next) {
+// carOrderSchema.pre('save', async function (next) {
 
-    try {
+//     try {
 
-        const car = await CarModel.findById(this.car)
-        if (!car) {
-            return next(new Error('car not found. please give a valied car id'))
-        }
-        if (car.quantity <= 0) {
-            return next(new Error('This car is not available in our store'));
-        }
-        this.totalPrice = car.price * this.quantity;
-        const newCarQuantity = car.quantity - this.quantity;
+//         const car = await CarModel.find({ $or: this.cars.map(item => { _id: item.car }) })
+//         if (!car) {
+//             return next(new Error('car not found. please  select a car for place order'))
+//         }
+//         if (car.quantity <= 0) {
+//             return next(new Error('This car out of stock. please wait for stock again!'));
+//         }
+//         this.totalPrice = car.price * this.quantity;
+//         const newCarQuantity = car.quantity - this.quantity;
 
-        if (newCarQuantity <= 0) {
-            await CarModel.findByIdAndUpdate(this.car, { inStock: false })
-        }
-        await CarModel.findByIdAndUpdate(this.car, { quantity: newCarQuantity })
+//         if (newCarQuantity <= 0) {
+//             await CarModel.findByIdAndUpdate(this.car, { inStock: false })
+//         }
+//         await CarModel.findByIdAndUpdate(this.car, { quantity: newCarQuantity })
 
-        next();
+//         next();
 
-    } catch (err: any) {
-        next(err)
-    }
-})
+//     } catch (err: any) {
+//         next(err)
+//     }
+// })
 
 const OrderModel = model<IOrder>('order', carOrderSchema)
 

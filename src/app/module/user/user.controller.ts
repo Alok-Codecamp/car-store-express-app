@@ -1,6 +1,6 @@
 import asyncWrapper from "../../utils/asyncWraper";
 import responseSender from "../../utils/responseSender";
-import httpStatus from 'http-status';
+import httpStatus, { status } from 'http-status';
 import { userService } from "./user.service";
 
 const createUser = asyncWrapper(async (req, res) => {
@@ -54,12 +54,13 @@ const changePassword = asyncWrapper(async (req, res) => {
 
     const result = await userService.changePasswordFromDb(req.params.userEmail, req.body)
     responseSender(res, {
-        statusCode: httpStatus.OK,
+        statusCode: status.OK,
         success: true,
         message: 'password changed.',
         data: result,
     })
 })
+
 
 
 export const userController = {

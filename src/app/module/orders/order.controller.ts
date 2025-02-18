@@ -7,38 +7,22 @@ import responseSender from "../../utils/responseSender";
 import status from "http-status";
 
 
-const createOrder = async (req: Request, res: Response) => {
+const createOrder = asyncWrapper(async (req: Request, res: Response) => {
 
-    try {
-        const orderData: IOrder = req.body;
-        // if (orderData.quantity < 1) {
-        //     throw new Error('minimum order quantity should be 1')
-        // }
-        if (orderData) {
-            const orderdCar = await CarModel.findById(orderData.car);
-            if (orderdCar?.inStock === false) {
-                throw new Error('Sorry! This car is out of stocke')
-            }
+    const user = req.user;
+    const orderData = req.body;
 
-            const result = await orderService.createOrderInDb(orderData)
-            console.log(result);
-
-            res.status(200).json({
-                message: 'order created successfully',
-                status: true,
-                data: result
-            })
-        }
-    } catch (error: any) {
-        res.status(500).json({
-            "message": error.message,
-            "success": false,
-            "error": error
-        })
-    }
+    const order = await orderService.createOrderInDb(user, orderData, req.ip!, res);
 
 
-}
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Orders created successfully',
+        data: order
+    })
+
+})
 const getOrders = asyncWrapper(async (req, res) => {
     const allOrders = await orderService.getOrdersFromDb();
 
