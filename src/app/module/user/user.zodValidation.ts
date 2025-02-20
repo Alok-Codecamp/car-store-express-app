@@ -13,7 +13,6 @@ const createUserValidationSchema = z.object({
 });
 const updateUserValidationSchema = z.object({
     name: z.string().optional(),
-    email: z.string().email("Invalid email address!").optional(),
     address: z.string().optional(),
 });
 

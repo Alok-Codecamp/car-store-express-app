@@ -41,12 +41,6 @@ const globalErrorhandler = (err: any, req: Request, res: Response, next: NextFun
             message = structuredError.message,
             errorSources = structuredError.errorSources
     }
-    else if (err.name === 'CastError') {
-        const structuredError = handleCastError(err);
-        statusCode = structuredError.statusCode,
-            message = structuredError.message,
-            errorSources = structuredError.errorSources
-    }
     else if (err.code === '11000') {
         const structuredError = handleDuplicateError(err);
         statusCode = structuredError.statusCode,

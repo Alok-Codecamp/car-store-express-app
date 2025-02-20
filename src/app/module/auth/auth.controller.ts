@@ -34,9 +34,9 @@ const login = asyncWrapper(async (req, res) => {
 
 const refreshToken = asyncWrapper(async (req, res) => {
     const { refreshToken } = req.cookies;
-    console.log(refreshToken)
+    console.log('refresh token', refreshToken)
     const result = await authServices.refreshToken(refreshToken as string)
-
+    console.log('result', result);
     responseSender(res, {
         statusCode: status.ACCEPTED,
         success: true,
@@ -46,9 +46,9 @@ const refreshToken = asyncWrapper(async (req, res) => {
 })
 const forgetPassword = asyncWrapper(async (req, res) => {
     const userEmail = req.body?.email;
-
+    console.log(userEmail)
     const result = await authServices.forgetPassword(userEmail);
-
+    console.log(result)
     responseSender(res, {
         statusCode: status.OK,
         success: true,
@@ -59,8 +59,8 @@ const forgetPassword = asyncWrapper(async (req, res) => {
 })
 
 const resetPassword = asyncWrapper(async (req, res) => {
-    const token = req.headers.authorization
-    const result = await authServices.resetPassword(req.body, token as string);
+    // console.log(req.body);
+    const result = await authServices.resetPassword(req.body);
 
     responseSender(res, {
         statusCode: status.OK,

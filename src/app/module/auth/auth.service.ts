@@ -65,9 +65,9 @@ const refreshToken = async (token: string) => {
 }
 
 const forgetPassword = async (userEmail: string) => {
-    console.log(userEmail)
+
     const isUserExists = await UserModel.isUserExistsByEmail(userEmail);
-    console.log(isUserExists)
+
     if (!isUserExists) {
         throw new AppError(status.NOT_FOUND, `This user is not found !`)
     }
@@ -94,10 +94,13 @@ const forgetPassword = async (userEmail: string) => {
 
 }
 
-const resetPassword = async (payload: { email: string, newPassword: string }, token: string) => {
-    const isUserExists = await UserModel.isUserExistsByEmail(payload.email);
-    console.log('is user ', isUserExists);
+const resetPassword = async (payload: { email: string, token: string, newPassword: string }) => {
 
+    const decoded = verifyToken(payload.token, config.jwt_access_secret as string);
+    if (decoded.email !== payload.email) {
+        throw new AppError(status.NOT_FOUND, `You are not registerd ! please login`)
+    }
+    const isUserExists = await UserModel.isUserExistsByEmail(payload.email);
 
     if (!isUserExists) {
         throw new AppError(status.NOT_FOUND, `This user is not found !`)
@@ -109,25 +112,17 @@ const resetPassword = async (payload: { email: string, newPassword: string }, to
         throw new AppError(status.FORBIDDEN, `This user is blocked !`)
     }
 
-    const decoded = verifyToken(token, config.jwt_access_secret as string)
-
-    const { role, email, iat } = decoded;
-
-    if (email !== payload.email) {
-        throw new AppError(status.FORBIDDEN, 'You are fobidden!')
-    }
-
     const newHashedPassword = await bcrypt.hash(payload.newPassword, Number(config.bcrypt_salt_rounds))
 
     const result = await UserModel.findOneAndUpdate({
-        email,
-        role,
+        email: payload.email,
+        role: isUserExists.role
     }, {
         password: newHashedPassword,
-    })
+    }, { new: true })
 
-    return 'password reset successfully. please Login'
 
+    return result;
 }
 export const authServices = {
     login,

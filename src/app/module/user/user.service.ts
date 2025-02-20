@@ -41,9 +41,8 @@ const updateUserFromDb = async (userEmail: string, userData: TUpdateUser) => {
     if (!isuserExist) {
         throw new AppError(status.NOT_FOUND, 'User not found');
     }
+    const result = await UserModel.findOneAndUpdate({ email: userEmail }, userData, { new: true, upsert: true });
 
-
-    const result = await UserModel.findOneAndUpdate({ email: userEmail }, userData, { new: true });
     return result;
 
 }
