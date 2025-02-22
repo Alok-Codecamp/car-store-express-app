@@ -31,23 +31,21 @@ class QueryBuilder {
         excludeFildes.forEach((field) => {
             delete queryObj[field];
         });
-        let min;
-        let max;
-        if (queryObj.minPrice && queryObj.maxPric) {
+        if (queryObj.minPrice && queryObj.maxPrice) {
             console.log('after parse:', queryObj);
             const min = queryObj.minPrice;
             const max = queryObj.maxPrice;
             delete queryObj['minPrice'];
             delete queryObj['maxPrice'];
-            console.log(queryObj);
             this.modelQuery = this.modelQuery.find({
                 $and: [
                     { price: { $gte: min, $lte: max } },
-                    Object.assign({}, queryObj)
+                    queryObj
                 ]
             });
         }
         else {
+            console.log(queryObj);
             this.modelQuery = this.modelQuery.find(queryObj);
         }
         // queryObj as FilterQuery<T>
