@@ -31,8 +31,7 @@ class QueryBuilder<T> {
         excludeFildes.forEach((field) => {
             delete queryObj[field]
         })
-        let min;
-        let max;
+
         if (queryObj.minPrice && queryObj.maxPric) {
 
 
