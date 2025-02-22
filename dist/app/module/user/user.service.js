@@ -19,7 +19,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../../config/config"));
 const createUserIntoDb = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log('sercvice', payload)
+    console.log('sercvice', payload);
     const userExists = yield user_model_1.UserModel.isUserExistsByEmail(payload.email);
     console.log(userExists);
     if (userExists) {

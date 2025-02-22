@@ -9,7 +9,7 @@ import { verifyToken } from "../auth/auth.utils";
 
 const createUserIntoDb = async (payload: IUser) => {
 
-    // console.log('sercvice', payload)
+    console.log('sercvice', payload)
     const userExists = await UserModel.isUserExistsByEmail(payload.email);
     console.log(userExists)
     if (userExists) {

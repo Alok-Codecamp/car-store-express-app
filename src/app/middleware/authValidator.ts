@@ -37,6 +37,7 @@ export const authValidator = (...requiredRoles: TUserRole[]) => {
         }
 
 
+
         if (requiredRoles && !requiredRoles.includes(role)) {
             throw new AppError(status.NOT_ACCEPTABLE, `you are unauthorized. please login!`)
         }

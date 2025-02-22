@@ -19,7 +19,8 @@ const car_model_1 = __importDefault(require("../cars/car.model"));
 const user_model_1 = require("../user/user.model");
 const order_utils_1 = require("./order.utils");
 const createOrderInDb = (requestedUser, payload, client_ip, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!payload.cars.length) {
+    var _a;
+    if (!((_a = payload === null || payload === void 0 ? void 0 : payload.cars) === null || _a === void 0 ? void 0 : _a.length)) {
         throw new AppError_1.default(http_status_1.default.NOT_ACCEPTABLE, 'Please select a Car!');
     }
     const { cars } = payload;

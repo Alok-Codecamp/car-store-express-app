@@ -10,7 +10,7 @@ import { Response } from "express";
 
 const createOrderInDb = async (requestedUser: JwtPayload, payload: { cars: { car: string, quantity: number }[] }, client_ip: string, res: Response) => {
 
-    if (!payload.cars.length) {
+    if (!payload?.cars?.length) {
         throw new AppError(status.NOT_ACCEPTABLE, 'Please select a Car!')
     }
 
