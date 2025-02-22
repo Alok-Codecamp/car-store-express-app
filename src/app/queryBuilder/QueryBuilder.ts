@@ -28,17 +28,19 @@ class QueryBuilder<T> {
     filter() {
         const queryObj = { ...this.query };
         const excludeFildes = ['search', 'sort', 'limit', 'page', 'field']
-
         excludeFildes.forEach((field) => {
             delete queryObj[field]
         })
         let min;
         let max;
-        if (queryObj.price) {
-            const pObj = JSON.parse(queryObj.price as string);
-            min = Number(pObj.min);
-            max = Number(pObj.max);
-            delete queryObj['price'];
+        if (queryObj.minPrice && queryObj.maxPric) {
+
+
+            console.log('after parse:', queryObj);
+            const min = queryObj.minPrice;
+            const max = queryObj.maxPrice;
+            delete queryObj['minPrice'];
+            delete queryObj['maxPrice'];
             console.log(queryObj)
             this.modelQuery = this.modelQuery.find({
                 $and: [
@@ -47,7 +49,7 @@ class QueryBuilder<T> {
                 ]
             })
         } else {
-            console.log(queryObj)
+
             this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>)
 
         }

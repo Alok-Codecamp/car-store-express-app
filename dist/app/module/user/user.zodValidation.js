@@ -11,7 +11,6 @@ const createUserValidationSchema = zod_1.z.object({
 });
 const updateUserValidationSchema = zod_1.z.object({
     name: zod_1.z.string().optional(),
-    email: zod_1.z.string().email("Invalid email address!").optional(),
     address: zod_1.z.string().optional(),
 });
 exports.userValidation = {

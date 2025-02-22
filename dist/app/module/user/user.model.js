@@ -38,6 +38,12 @@ exports.UserSchema = new mongoose_1.Schema({
     },
     address: {
         type: String,
+    },
+    status: {
+        type: String,
+        enum: ["Active", "Blocked"],
+        required: true,
+        default: "Active"
     }
 }, { timestamps: true, versionKey: false });
 // hash password 

@@ -18,6 +18,7 @@ const user_model_1 = require("../user/user.model");
 const http_status_1 = __importDefault(require("http-status"));
 const auth_utils_1 = require("./auth.utils");
 const config_1 = __importDefault(require("../../config/config"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const isUserExist = yield user_model_1.UserModel.isUserExistsByEmail(payload.email);
     // check if user is missing 
@@ -59,7 +60,49 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
         newToken
     };
 });
+const forgetPassword = (userEmail) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserExists = yield user_model_1.UserModel.isUserExistsByEmail(userEmail);
+    if (!isUserExists) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, `This user is not found !`);
+    }
+    const userStatus = isUserExists === null || isUserExists === void 0 ? void 0 : isUserExists.status;
+    if (userStatus === 'Blocked') {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, `This user is blocked !`);
+    }
+    const jwtPayload = {
+        email: isUserExists.email,
+        role: isUserExists.role
+    };
+    const resetToken = (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwt_access_secret, '10m');
+    const resetUrl = `http://localhost:5173/reset-password?email=${isUserExists.email}&token=${resetToken}`;
+    (0, auth_utils_1.sendEmail)(isUserExists.email, resetUrl);
+    return 'reset password send to your email';
+});
+const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const decoded = (0, auth_utils_1.verifyToken)(payload.token, config_1.default.jwt_access_secret);
+    if (decoded.email !== payload.email) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, `You are not registerd ! please login`);
+    }
+    const isUserExists = yield user_model_1.UserModel.isUserExistsByEmail(payload.email);
+    if (!isUserExists) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, `This user is not found !`);
+    }
+    const userStatus = isUserExists === null || isUserExists === void 0 ? void 0 : isUserExists.status;
+    if (userStatus === "Blocked") {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, `This user is blocked !`);
+    }
+    const newHashedPassword = yield bcrypt_1.default.hash(payload.newPassword, Number(config_1.default.bcrypt_salt_rounds));
+    const result = yield user_model_1.UserModel.findOneAndUpdate({
+        email: payload.email,
+        role: isUserExists.role
+    }, {
+        password: newHashedPassword,
+    }, { new: true });
+    return result;
+});
 exports.authServices = {
     login,
-    refreshToken
+    refreshToken,
+    forgetPassword,
+    resetPassword
 };

@@ -37,12 +37,6 @@ const globalErrorhandler = (err, req, res, next) => {
             message = structuredError.message,
             errorSources = structuredError.errorSources;
     }
-    else if (err.name === 'CastError') {
-        const structuredError = (0, handleCastError_1.handleCastError)(err);
-        statusCode = structuredError.statusCode,
-            message = structuredError.message,
-            errorSources = structuredError.errorSources;
-    }
     else if (err.code === '11000') {
         const structuredError = (0, handleDuplicateError_1.default)(err);
         statusCode = structuredError.statusCode,
@@ -70,7 +64,7 @@ const globalErrorhandler = (err, req, res, next) => {
             }
         ];
     }
-    return res.status(statusCode).json({
+    res.status(statusCode).json({
         success: false,
         message,
         errorSources,

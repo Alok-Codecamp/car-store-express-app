@@ -27,7 +27,7 @@ const carSchema = new mongoose_1.Schema({
         required: true,
     },
     price: {
-        type: String,
+        type: Number,
         required: [true, 'price is required'],
     },
     category: {
@@ -40,6 +40,7 @@ const carSchema = new mongoose_1.Schema({
                 "Crossover",
                 "Coupe",
                 "Convertible",
+                "Sport"
             ],
             message: '{VALUES}   is not valied. Car categories should be one of this Sedan ,SUV , Truck,Coupe,Convertible'
         }

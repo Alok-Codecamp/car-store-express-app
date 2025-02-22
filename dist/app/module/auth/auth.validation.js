@@ -9,6 +9,16 @@ const loginValidationSchema = zod_1.default.object({
     email: zod_1.default.string({ required_error: 'Email is required!!' }),
     password: zod_1.default.string({ required_error: 'Password is required' })
 });
+const forgetPasswordValidationSchema = zod_1.default.object({
+    email: zod_1.default.string({ required_error: 'User email is required!' })
+});
+const resetPasswordValidationSchema = zod_1.default.object({
+    token: zod_1.default.string({ required_error: 'User token is required!' }),
+    email: zod_1.default.string({ required_error: 'User email is required!' }),
+    newPassword: zod_1.default.string({ required_error: 'user password is required' }),
+});
 exports.authValidations = {
     loginValidationSchema,
+    forgetPasswordValidationSchema,
+    resetPasswordValidationSchema
 };

@@ -44,7 +44,7 @@ const updateUserFromDb = (userEmail, userData) => __awaiter(void 0, void 0, void
     if (!isuserExist) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
-    const result = yield user_model_1.UserModel.findOneAndUpdate({ email: userEmail }, userData, { new: true });
+    const result = yield user_model_1.UserModel.findOneAndUpdate({ email: userEmail }, userData, { new: true, upsert: true });
     return result;
 });
 const changePasswordFromDb = (userEmail, data) => __awaiter(void 0, void 0, void 0, function* () {

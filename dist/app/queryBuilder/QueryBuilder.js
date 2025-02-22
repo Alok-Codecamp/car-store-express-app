@@ -19,7 +19,7 @@ class QueryBuilder {
         if (search) {
             this.modelQuery = this.modelQuery.find({
                 $or: searchAbleFields.map((field) => ({
-                    [field]: { $regex: search, $option: 'i' }
+                    [field]: { $regex: search, $options: 'i' }
                 }))
             });
         }
@@ -31,7 +31,26 @@ class QueryBuilder {
         excludeFildes.forEach((field) => {
             delete queryObj[field];
         });
-        this.modelQuery = this.modelQuery.find(queryObj);
+        let min;
+        let max;
+        if (queryObj.minPrice && queryObj.maxPric) {
+            console.log('after parse:', queryObj);
+            const min = queryObj.minPrice;
+            const max = queryObj.maxPrice;
+            delete queryObj['minPrice'];
+            delete queryObj['maxPrice'];
+            console.log(queryObj);
+            this.modelQuery = this.modelQuery.find({
+                $and: [
+                    { price: { $gte: min, $lte: max } },
+                    Object.assign({}, queryObj)
+                ]
+            });
+        }
+        else {
+            this.modelQuery = this.modelQuery.find(queryObj);
+        }
+        // queryObj as FilterQuery<T>
         return this;
     }
     sort() {
@@ -43,7 +62,7 @@ class QueryBuilder {
         var _a;
         const page = Number((_a = this.query) === null || _a === void 0 ? void 0 : _a.page) || 1;
         const limit = Number(this.query.limit) || 10;
-        let skip = (page - 1) * limit;
+        const skip = (page - 1) * limit;
         this.modelQuery = this.modelQuery.skip(skip).limit(limit);
         return this;
     }

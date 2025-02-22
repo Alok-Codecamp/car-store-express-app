@@ -34,8 +34,9 @@ const login = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0,
 }));
 const refreshToken = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
-    console.log(refreshToken);
+    console.log('refresh token', refreshToken);
     const result = yield auth_service_1.authServices.refreshToken(refreshToken);
+    console.log('result', result);
     (0, responseSender_1.default)(res, {
         statusCode: http_status_1.default.ACCEPTED,
         success: true,
@@ -43,7 +44,32 @@ const refreshToken = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, 
         data: result
     });
 }));
+const forgetPassword = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const userEmail = (_a = req.body) === null || _a === void 0 ? void 0 : _a.email;
+    console.log(userEmail);
+    const result = yield auth_service_1.authServices.forgetPassword(userEmail);
+    console.log(result);
+    (0, responseSender_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'check email for reset password',
+        data: result
+    });
+}));
+const resetPassword = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log(req.body);
+    const result = yield auth_service_1.authServices.resetPassword(req.body);
+    (0, responseSender_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'password reset successfully',
+        data: result
+    });
+}));
 exports.authController = {
     login,
-    refreshToken
+    refreshToken,
+    forgetPassword,
+    resetPassword
 };
