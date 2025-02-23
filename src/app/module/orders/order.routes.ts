@@ -9,8 +9,9 @@ router.post('/create-order', authValidator('admin', 'user'), orderController.cre
 
 router.get('/', authValidator('admin', 'user'), orderController.getOrders)
 
-router.get('/verify-payment', authValidator('admin', 'user'), orderController.verifyPayment)
+router.get('/:email', authValidator('admin', 'user'), orderController.getOrdersById);
 
+router.post('/verify-payment', authValidator('admin', 'user'), orderController.verifyPayment)
 
 router.get('/revenue', orderController.getRevenue)
 

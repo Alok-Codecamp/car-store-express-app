@@ -33,6 +33,7 @@ export const authValidator = (...requiredRoles: TUserRole[]) => {
 
         //check if the user is missing
         if (!existingUser) {
+
             throw new AppError(status.NOT_ACCEPTABLE, 'User not found!')
         }
 

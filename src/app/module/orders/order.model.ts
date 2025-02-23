@@ -24,6 +24,9 @@ const carOrderSchema = new Schema<IOrder>({
                 required: true,
                 min: [1, 'minimun quantity should be 1'],
             },
+            city: {
+                type: String
+            }
         }
     ],
     totalPrice: {

@@ -49,11 +49,24 @@ const getOrders = asyncWrapper(async (req, res) => {
         data: allOrders
     })
 })
+
+const getOrdersById = asyncWrapper(async (req, res) => {
+    const { email } = req.params;
+
+    const result = await orderService.getOrdersByIdFromDb(email);
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Orders retrive successfully',
+        data: result
+    })
+
+})
 const getRevenue = async (req: Request, res: Response) => {
 
     try {
         const result = await orderService.getOrderRevenue();
-        console.log(result);
+
 
         res.status(200).json({
             message: "Revenue calculated successfully",
@@ -76,4 +89,5 @@ export default {
     getRevenue,
     getOrders,
     verifyPayment,
+    getOrdersById,
 }

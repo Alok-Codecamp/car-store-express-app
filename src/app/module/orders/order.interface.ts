@@ -8,6 +8,7 @@ export interface IOrder {
         car: ObjectId;
         quantity: number;
     }[];
+    city: string,
     status: "Pending" | "Paid" | "Shipped" | "Completed" | "Cancelled";
     totalPrice: number;
     transaction: {

@@ -37,7 +37,7 @@ const createCarData = asyncWrapper(async (req: Request, res: Response) => {
 
 const getAllCars = asyncWrapper(async (req: Request, res: Response) => {
 
-    // console.log(req.params, req.query) 
+
     const search = req.query;
     const result: { data: ICars[]; meta: TMeta } = await carService.getAllCarsFromDb(search);
 

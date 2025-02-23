@@ -15,7 +15,7 @@ const createCarsDataIntoDb = async (carData: ICars) => {
 }
 
 const getAllCarsFromDb = async (searchTerm: Record<string, unknown>) => {
-    console.log(searchTerm)
+
     const carQuery = new QueryBuilder(CarModel.find(), searchTerm).search(['brand', 'model', 'category']).filter().sort().fields().paginate();
     const result = await carQuery.modelQuery;
 

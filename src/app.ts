@@ -6,8 +6,9 @@ import cookieParser from "cookie-parser";
 const app: Application = express();
 
 //  middleware setup
+// motion-era.vercel.app
 app.use(express.json());
-app.use(cors({ origin: 'https://motion-era.vercel.app', credentials: true }));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(cookieParser());
 
 // base URL path for carRoutes module

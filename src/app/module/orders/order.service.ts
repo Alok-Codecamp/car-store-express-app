@@ -8,7 +8,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { Response } from "express";
 
 
-const createOrderInDb = async (requestedUser: JwtPayload, payload: { cars: { car: string, quantity: number }[] }, client_ip: string, res: Response) => {
+const createOrderInDb = async (requestedUser: JwtPayload, payload: { cars: { car: string, quantity: number, shippingAddress: string }[] }, client_ip: string, res: Response) => {
 
     if (!payload?.cars?.length) {
         throw new AppError(status.NOT_ACCEPTABLE, 'Please select a Car!')
@@ -42,7 +42,7 @@ const createOrderInDb = async (requestedUser: JwtPayload, payload: { cars: { car
         order_id: order._id,
         currency: "BDT",
         customer_name: user.name,
-        customer_address: "Rajshahi",
+        customer_address: cars[0].shippingAddress,
         customer_email: user.email,
         customer_phone: "N/A",
         customer_city: "N/A",
@@ -80,7 +80,20 @@ const verifyPaymentFromShurjoPay = async (order_id: string) => {
 
 const getOrdersFromDb = async () => {
     const orders = await OrderModel.find();
+
     return orders;
+}
+
+const getOrdersByIdFromDb = async (email: string) => {
+    const isUserExist = await UserModel.isUserExistsByEmail(email);
+
+    if (!isUserExist) {
+        throw new AppError(status.NOT_FOUND, 'user not found')
+    }
+
+    const result = await OrderModel.find({ user: isUserExist._id });
+    console.log(result)
+    return result;
 }
 
 const getOrderRevenue = async () => {
@@ -104,6 +117,7 @@ export default {
     createOrderInDb,
     getOrderRevenue,
     getOrdersFromDb,
+    getOrdersByIdFromDb,
     verifyPaymentFromShurjoPay,
 
 }
