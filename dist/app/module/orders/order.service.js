@@ -46,7 +46,7 @@ const createOrderInDb = (requestedUser, payload, client_ip, res) => __awaiter(vo
         order_id: order._id,
         currency: "BDT",
         customer_name: user.name,
-        customer_address: "Rajshahi",
+        customer_address: cars[0].shippingAddress,
         customer_email: user.email,
         customer_phone: "N/A",
         customer_city: "N/A",
@@ -76,6 +76,15 @@ const getOrdersFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
     const orders = yield order_model_1.default.find();
     return orders;
 });
+const getOrdersByIdFromDb = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserExist = yield user_model_1.UserModel.isUserExistsByEmail(email);
+    if (!isUserExist) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'user not found');
+    }
+    const result = yield order_model_1.default.find({ user: isUserExist._id });
+    console.log(result);
+    return result;
+});
 const getOrderRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_model_1.default.aggregate([
         {
@@ -93,5 +102,6 @@ exports.default = {
     createOrderInDb,
     getOrderRevenue,
     getOrdersFromDb,
+    getOrdersByIdFromDb,
     verifyPaymentFromShurjoPay,
 };

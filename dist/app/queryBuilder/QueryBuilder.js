@@ -34,11 +34,13 @@ class QueryBuilder {
         if (queryObj.minPrice && queryObj.maxPrice) {
             const min = queryObj.minPrice;
             const max = queryObj.maxPrice;
+            const inStock = (queryObj === null || queryObj === void 0 ? void 0 : queryObj.inStock) === 'true' ? true : false;
             delete queryObj['minPrice'];
             delete queryObj['maxPrice'];
             this.modelQuery = this.modelQuery.find({
                 $and: [
                     { price: { $gte: min, $lte: max } },
+                    { inStock: inStock },
                     queryObj
                 ]
             });

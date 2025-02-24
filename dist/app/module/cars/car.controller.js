@@ -35,7 +35,6 @@ const createCarData = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0,
 }));
 // define controller function for get all car data and also get car data by query params
 const getAllCars = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(req.params, req.query) 
     const search = req.query;
     const result = yield car_service_1.default.getAllCarsFromDb(search);
     (0, responseSender_1.default)(res, Object.assign({ statusCode: http_status_1.default.OK, success: true, message: 'car retrive successfullly' }, result));

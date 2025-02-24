@@ -70,6 +70,7 @@ const getUserByEmail = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0
     });
 }));
 const updateUser = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('body', req.body);
     const result = yield user_service_1.userService.updateUserFromDb(req.params.userEmail, req.body);
     (0, responseSender_1.default)(res, {
         statusCode: http_status_1.default.OK,

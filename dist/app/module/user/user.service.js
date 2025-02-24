@@ -40,6 +40,7 @@ const getUserByIdFromDb = (userEmail) => __awaiter(void 0, void 0, void 0, funct
     return result;
 });
 const updateUserFromDb = (userEmail, userData) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(userData);
     const isuserExist = yield user_model_1.UserModel.isUserExistsByEmail(userEmail);
     if (!isuserExist) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
@@ -47,6 +48,8 @@ const updateUserFromDb = (userEmail, userData) => __awaiter(void 0, void 0, void
     const result = yield user_model_1.UserModel.findOneAndUpdate({ email: userEmail }, userData, { new: true, upsert: true });
     return result;
 });
+// const changeStatusByAdmin = (data:{status:string,email:string})=>{
+// }
 const changePasswordFromDb = (userEmail, data) => __awaiter(void 0, void 0, void 0, function* () {
     const isuserExist = yield user_model_1.UserModel.isUserExistsByEmail(userEmail);
     if (!isuserExist) {

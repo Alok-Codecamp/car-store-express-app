@@ -24,7 +24,6 @@ const createCarsDataIntoDb = (carData) => __awaiter(void 0, void 0, void 0, func
     return result;
 });
 const getAllCarsFromDb = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(searchTerm);
     const carQuery = new QueryBuilder_1.default(car_model_1.default.find(), searchTerm).search(['brand', 'model', 'category']).filter().sort().fields().paginate();
     const result = yield carQuery.modelQuery;
     const meta = yield carQuery.countTotal();
@@ -36,6 +35,7 @@ const getAllCarsFromDb = (searchTerm) => __awaiter(void 0, void 0, void 0, funct
 //  get specific car data find by id
 const getspecificCarFromDb = (carIdparams) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield car_model_1.default.findById(carIdparams);
+    console.log(result);
     return result;
 });
 //  funtion for update specific data 
@@ -54,17 +54,18 @@ const deleteCarDataInDB = (carId) => __awaiter(void 0, void 0, void 0, function*
     if (!isCarExists) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Car not Found');
     }
-    if (isCarExists.inStock === false) {
-        throw new AppError_1.default(http_status_1.default.NOT_ACCEPTABLE, 'Car is out of stock');
-    }
-    if (isCarExists.quantity === Number(0)) {
-        throw new AppError_1.default(http_status_1.default.NOT_ACCEPTABLE, 'quantity less then one');
-    }
-    if (isCarExists.quantity === Number(1)) {
-        const result = yield car_model_1.default.findByIdAndUpdate(carId, { quantity: 0, inStock: 'false' });
-        return result;
-    }
-    const result = yield car_model_1.default.findByIdAndUpdate(carId, { quantity: (isCarExists === null || isCarExists === void 0 ? void 0 : isCarExists.quantity) - 1 });
+    // if (isCarExists.inStock === false) {
+    //     throw new AppError(status.NOT_ACCEPTABLE, 'Car is out of stock')
+    // }
+    // if (isCarExists.quantity === Number(0)) {
+    //     throw new AppError(status.NOT_ACCEPTABLE, 'quantity less then one')
+    // }
+    // if (isCarExists.quantity === Number(1)) {
+    //     const result = await CarModel.findByIdAndUpdate(carId, { quantity: 0, inStock: 'false' });
+    //     return result;
+    // }
+    // const result = await CarModel.findByIdAndUpdate(carId, { quantity: isCarExists?.quantity - 1 });
+    const result = yield car_model_1.default.findByIdAndDelete(carId);
     return result;
 });
 exports.default = {

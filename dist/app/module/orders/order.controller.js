@@ -46,10 +46,19 @@ const getOrders = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, voi
         data: allOrders
     });
 }));
+const getOrdersById = (0, asyncWraper_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.params;
+    const result = yield order_service_1.default.getOrdersByIdFromDb(email);
+    (0, responseSender_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Orders retrive successfully',
+        data: result
+    });
+}));
 const getRevenue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield order_service_1.default.getOrderRevenue();
-        console.log(result);
         res.status(200).json({
             message: "Revenue calculated successfully",
             status: true,
@@ -71,4 +80,5 @@ exports.default = {
     getRevenue,
     getOrders,
     verifyPayment,
+    getOrdersById,
 };
