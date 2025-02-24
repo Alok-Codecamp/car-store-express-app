@@ -37,6 +37,7 @@ const getUserByIdFromDb = async (userEmail: string) => {
     return result;
 }
 const updateUserFromDb = async (userEmail: string, userData: TUpdateUser) => {
+    console.log(userData)
     const isuserExist = await UserModel.isUserExistsByEmail(userEmail);
     if (!isuserExist) {
         throw new AppError(status.NOT_FOUND, 'User not found');
@@ -46,6 +47,10 @@ const updateUserFromDb = async (userEmail: string, userData: TUpdateUser) => {
     return result;
 
 }
+
+// const changeStatusByAdmin = (data:{status:string,email:string})=>{
+
+// }
 
 const changePasswordFromDb = async (userEmail: string, data: { oldPassword: string; newPassword: string }) => {
     const isuserExist = await UserModel.isUserExistsByEmail(userEmail);

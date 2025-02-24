@@ -14,6 +14,7 @@ const createUserValidationSchema = z.object({
 const updateUserValidationSchema = z.object({
     name: z.string().optional(),
     address: z.string().optional(),
+    status: z.string().optional(),
 });
 
 export const userValidation = {

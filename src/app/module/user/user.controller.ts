@@ -39,7 +39,7 @@ const getUserByEmail = asyncWrapper(async (req, res) => {
     })
 })
 const updateUser = asyncWrapper(async (req, res) => {
-
+    console.log('body', req.body)
     const result = await userService.updateUserFromDb(req.params.userEmail, req.body)
     responseSender(res, {
         statusCode: httpStatus.OK,

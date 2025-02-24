@@ -30,6 +30,7 @@ const getAllCarsFromDb = async (searchTerm: Record<string, unknown>) => {
 
 const getspecificCarFromDb = async (carIdparams: string) => {
     const result = await CarModel.findById(carIdparams);
+    console.log(result)
     return result;
 
 }
@@ -52,18 +53,19 @@ const deleteCarDataInDB = async (carId: string) => {
     if (!isCarExists) {
         throw new AppError(status.NOT_FOUND, 'Car not Found')
     }
-    if (isCarExists.inStock === false) {
-        throw new AppError(status.NOT_ACCEPTABLE, 'Car is out of stock')
-    }
-    if (isCarExists.quantity === Number(0)) {
-        throw new AppError(status.NOT_ACCEPTABLE, 'quantity less then one')
-    }
-    if (isCarExists.quantity === Number(1)) {
-        const result = await CarModel.findByIdAndUpdate(carId, { quantity: 0, inStock: 'false' });
-        return result;
-    }
+    // if (isCarExists.inStock === false) {
+    //     throw new AppError(status.NOT_ACCEPTABLE, 'Car is out of stock')
+    // }
+    // if (isCarExists.quantity === Number(0)) {
+    //     throw new AppError(status.NOT_ACCEPTABLE, 'quantity less then one')
+    // }
+    // if (isCarExists.quantity === Number(1)) {
+    //     const result = await CarModel.findByIdAndUpdate(carId, { quantity: 0, inStock: 'false' });
+    //     return result;
+    // }
 
-    const result = await CarModel.findByIdAndUpdate(carId, { quantity: isCarExists?.quantity - 1 });
+    // const result = await CarModel.findByIdAndUpdate(carId, { quantity: isCarExists?.quantity - 1 });
+    const result = await CarModel.findByIdAndDelete(carId)
 
     return result;
 }
