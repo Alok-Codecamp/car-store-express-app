@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { IOrder } from "./order.interface";
 import orderService from "./order.service";
-import CarModel from "../cars/car.model";
 import asyncWrapper from "../../utils/asyncWraper";
 import responseSender from "../../utils/responseSender";
 import status from "http-status";
@@ -23,19 +21,6 @@ const createOrder = asyncWrapper(async (req: Request, res: Response) => {
 
 })
 
-const verifyPayment = asyncWrapper(async (req, res) => {
-
-    const { order_id } = req.query;
-
-    const paymentVericationResponse = await orderService.verifyPaymentFromShurjoPay(order_id as string);
-
-    responseSender(res, {
-        statusCode: status.OK,
-        success: true,
-        message: 'Orderd veryfied.',
-        data: paymentVericationResponse
-    })
-})
 
 
 
@@ -62,27 +47,60 @@ const getOrdersById = asyncWrapper(async (req, res) => {
     })
 
 })
-const getRevenue = async (req: Request, res: Response) => {
 
-    try {
-        const result = await orderService.getOrderRevenue();
+const updateOrder = asyncWrapper(async (req, res) => {
+    const orderId = req.params.orderId;
+
+    const result = await orderService.updateOrderIntoDb({ orderId, status: req.body?.status })
+
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Order status updated successfully',
+        data: result
+    })
+})
+const deleteOrder = asyncWrapper(async (req, res) => {
+    const orderId = req.params.orderId;
+
+    const result = await orderService.deleteOrderIntoDb(orderId)
+
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Order deleted successfully',
+        data: result
+    })
+})
+
+const getRevenue = asyncWrapper(async (req, res) => {
+
+    const result = await orderService.getOrderRevenue();
 
 
-        res.status(200).json({
-            message: "Revenue calculated successfully",
-            status: true,
-            data: {
-                totalRevenue: result
-            }
-        })
-    } catch (err) {
-        res.status(500).json({
-            message: "Revenue calculated failed",
-            status: true,
-            data: err
-        })
-    }
-}
+    res.status(200).json({
+        message: "Revenue calculated successfully",
+        status: true,
+        data: {
+            totalRevenue: result
+        }
+    })
+
+})
+
+const verifyPayment = asyncWrapper(async (req, res) => {
+
+    const { order_id } = req.query;
+
+    const paymentVericationResponse = await orderService.verifyPaymentFromShurjoPay(order_id as string);
+
+    responseSender(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Orderd veryfied.',
+        data: paymentVericationResponse
+    })
+})
 
 export default {
     createOrder,
@@ -90,4 +108,6 @@ export default {
     getOrders,
     verifyPayment,
     getOrdersById,
+    updateOrder,
+    deleteOrder,
 }

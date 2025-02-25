@@ -82,7 +82,24 @@ const getOrdersByIdFromDb = (email) => __awaiter(void 0, void 0, void 0, functio
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'user not found');
     }
     const result = yield order_model_1.default.find({ user: isUserExist._id });
-    console.log(result);
+    return result;
+});
+// update order 
+const updateOrderIntoDb = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    const isOrderExists = yield order_model_1.default.findById(data.orderId);
+    if (!isOrderExists) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Order not found');
+    }
+    const result = yield order_model_1.default.findByIdAndUpdate(data.orderId, { status: data.status }, { new: true });
+    return result;
+});
+// delete order 
+const deleteOrderIntoDb = (orderId) => __awaiter(void 0, void 0, void 0, function* () {
+    const isOrderExists = yield order_model_1.default.findById(orderId);
+    if (!isOrderExists) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Order not found');
+    }
+    const result = yield order_model_1.default.findByIdAndDelete(orderId);
     return result;
 });
 const getOrderRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -95,7 +112,6 @@ const getOrderRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
         }
     ]);
     const calculatedRevenue = result[0].totalRevenue;
-    // console.log(calculatedRevenue);
     return calculatedRevenue;
 });
 exports.default = {
@@ -103,5 +119,7 @@ exports.default = {
     getOrderRevenue,
     getOrdersFromDb,
     getOrdersByIdFromDb,
+    updateOrderIntoDb,
+    deleteOrderIntoDb,
     verifyPaymentFromShurjoPay,
 };

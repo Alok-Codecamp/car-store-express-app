@@ -92,7 +92,28 @@ const getOrdersByIdFromDb = async (email: string) => {
     }
 
     const result = await OrderModel.find({ user: isUserExist._id });
-    console.log(result)
+
+    return result;
+}
+
+// update order 
+const updateOrderIntoDb = async (data: { orderId: string; status: string }) => {
+    const isOrderExists = await OrderModel.findById(data.orderId);
+
+    if (!isOrderExists) {
+        throw new AppError(status.NOT_FOUND, 'Order not found')
+    }
+    const result = await OrderModel.findByIdAndUpdate(data.orderId, { status: data.status }, { new: true });
+    return result;
+}
+
+// delete order 
+const deleteOrderIntoDb = async (orderId: string) => {
+    const isOrderExists = await OrderModel.findById(orderId);
+    if (!isOrderExists) {
+        throw new AppError(status.NOT_FOUND, 'Order not found')
+    }
+    const result = await OrderModel.findByIdAndDelete(orderId);
     return result;
 }
 
@@ -107,7 +128,7 @@ const getOrderRevenue = async () => {
         }
     ])
     const calculatedRevenue = result[0].totalRevenue;
-    // console.log(calculatedRevenue);
+
 
     return calculatedRevenue;
 
@@ -118,6 +139,8 @@ export default {
     getOrderRevenue,
     getOrdersFromDb,
     getOrdersByIdFromDb,
+    updateOrderIntoDb,
+    deleteOrderIntoDb,
     verifyPaymentFromShurjoPay,
 
 }

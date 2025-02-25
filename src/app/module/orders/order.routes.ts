@@ -10,9 +10,8 @@ router.post('/create-order', authValidator('admin', 'user'), orderController.cre
 router.get('/', authValidator('admin', 'user'), orderController.getOrders)
 
 router.get('/:email', authValidator('admin', 'user'), orderController.getOrdersById);
-
+router.put('/:orderId', authValidator('admin'), orderController.updateOrder)
 router.post('/verify-payment', authValidator('admin', 'user'), orderController.verifyPayment)
-
-router.get('/revenue', orderController.getRevenue)
+router.delete('/:orderId', authValidator('admin'), orderController.deleteOrder);
 
 export const orderRoutes = router;
