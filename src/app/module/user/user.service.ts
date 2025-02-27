@@ -54,18 +54,20 @@ const updateUserFromDb = async (userEmail: string, userData: TUpdateUser) => {
 
 const changePasswordFromDb = async (userEmail: string, data: { oldPassword: string; newPassword: string }) => {
     const isuserExist = await UserModel.isUserExistsByEmail(userEmail);
+
     if (!isuserExist) {
         throw new AppError(status.NOT_FOUND, 'User not found');
     }
 
-    const isPasswordMatched = UserModel.isPasswordMatched(data.oldPassword, isuserExist.password);
+    const isPasswordMatched = await UserModel.isPasswordMatched(data.oldPassword, isuserExist.password);
 
     if (!isPasswordMatched) {
-        throw new AppError(status.NOT_ACCEPTABLE, 'Please enter correct password!')
+        throw new AppError(status.NOT_ACCEPTABLE, 'Current password is Wrong!')
     }
     const plainPass = data.newPassword;
     data.newPassword = await bcrypt.hash(plainPass, Number(config.bcrypt_salt_rounds));
     const result = await UserModel.findOneAndUpdate({ email: userEmail }, { password: data.newPassword })
+
     return result;
 }
 

@@ -55,9 +55,9 @@ const changePasswordFromDb = (userEmail, data) => __awaiter(void 0, void 0, void
     if (!isuserExist) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
-    const isPasswordMatched = user_model_1.UserModel.isPasswordMatched(data.oldPassword, isuserExist.password);
+    const isPasswordMatched = yield user_model_1.UserModel.isPasswordMatched(data.oldPassword, isuserExist.password);
     if (!isPasswordMatched) {
-        throw new AppError_1.default(http_status_1.default.NOT_ACCEPTABLE, 'Please enter correct password!');
+        throw new AppError_1.default(http_status_1.default.NOT_ACCEPTABLE, 'Current password is Wrong!');
     }
     const plainPass = data.newPassword;
     data.newPassword = yield bcrypt_1.default.hash(plainPass, Number(config_1.default.bcrypt_salt_rounds));
