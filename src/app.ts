@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 const app: Application = express();
 
 //  middleware setup
+
 app.use(express.json());
 app.use(cors({ origin: 'https://motion-era.vercel.app', credentials: true }));
 app.use(cookieParser());

@@ -55,6 +55,8 @@ const createOrderInDb = (requestedUser, payload, client_ip, res) => __awaiter(vo
     const payment = yield order_utils_1.orderUtils.makePaymentAsync(shurjopayPayload);
     if (payment === null || payment === void 0 ? void 0 : payment.transactionStatus) {
         yield order_model_1.default.findByIdAndUpdate(order._id, { transaction: { id: payment.sp_order_id, transactionStatus: payment.transactionStatus } });
+        const orderedCar = yield car_model_1.default.findById(order.cars[0].car);
+        yield car_model_1.default.findByIdAndUpdate(order.cars[0].car, { quantity: (orderedCar === null || orderedCar === void 0 ? void 0 : orderedCar.quantity) - order.cars[0].quantity });
     }
     return { order, payment };
 });

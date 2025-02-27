@@ -54,7 +54,9 @@ const createOrderInDb = async (requestedUser: JwtPayload, payload: { cars: { car
     const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
 
     if (payment?.transactionStatus) {
-        await OrderModel.findByIdAndUpdate(order._id, { transaction: { id: payment.sp_order_id, transactionStatus: payment.transactionStatus } })
+        await OrderModel.findByIdAndUpdate(order._id, { transaction: { id: payment.sp_order_id, transactionStatus: payment.transactionStatus } });
+        const orderedCar = await CarModel.findById(order.cars[0].car);
+        await CarModel.findByIdAndUpdate(order.cars[0].car, { quantity: orderedCar!?.quantity - order.cars[0].quantity })
     }
     return { order, payment };
 }
