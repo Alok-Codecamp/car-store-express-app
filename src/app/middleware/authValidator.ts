@@ -10,9 +10,9 @@ import { UserModel } from "../module/user/user.model";
 
 
 
-interface CustomRequest extends Request {
-    user: JwtPayload;
-}
+// interface CustomRequest extends Request {
+//     user: JwtPayload;
+// }
 
 export const authValidator = (...requiredRoles: TUserRole[]) => {
     return asyncWrapper(async (req, res, next) => {
@@ -44,6 +44,8 @@ export const authValidator = (...requiredRoles: TUserRole[]) => {
         }
 
         req.user = decoded as JwtPayload;
+
+        console.log(req.user);
         next();
     })
 }

@@ -1,6 +1,8 @@
-# Car Store
+# 🚗 Car Store
 
-## Over view
+# Live server: https://car-store-express-app.vercel.app
+
+## Overview
 
 ### car store is a back end application designed to manage car order, built using Tyepscript, express.js, mongodb, mongoose. This application allows client to add new car data , retrive specific car data, update car data and delete car data. client also can create car orders and client can get total revenue from all orders.
 
@@ -53,3 +55,29 @@
 ## Method:GET
 
 ### API for get revenue from all orders: https://car-store-express-app.vercel.app/api/orders/revenue
+
+# 🚗 CarStore – Backend Installation Guide
+
+This guide will walk you through setting up the **CarStore** backend project on your local machine.
+
+---
+
+## 🔧 Requirements
+
+Make sure you have the following installed:
+
+- **[Node.js](https://nodejs.org/)** (version 18 or later)
+- **[npm](https://www.npmjs.com/)** (comes with Node.js)
+- **[Git](https://git-scm.com/)** (optional, if cloning from a repository)
+- **[MongoDB](https://www.mongodb.com/)** (local or cloud instance)
+
+---
+
+## 📥 Installation Steps
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/carstore.git
+cd carstore
+```

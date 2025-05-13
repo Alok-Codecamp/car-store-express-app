@@ -1,5 +1,5 @@
 
 export const USER_ROLE = {
-    admin: 'admin',
+    mealProvider: 'admin',
     user: 'user'
 } as const;

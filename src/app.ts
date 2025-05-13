@@ -8,12 +8,13 @@ const app: Application = express();
 //  middleware setup
 
 app.use(express.json());
-app.use(cors({ origin: 'https://motion-era.vercel.app', credentials: true }));
+// https://motion-era.vercel.app
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(cookieParser());
 
 // base URL path for carRoutes module
 app.use('/api', router)
-
+app.use(cookieParser())
 
 
 app.get('/', (req, res) => {

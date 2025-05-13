@@ -59,6 +59,26 @@ const carSchema = new Schema<ICars>({
         type: String,
         required: true
     },
+    ratings: {
+        average: Number,          // e.g., 4.5
+        count: Number,            // e.g., total number of reviews
+        breakdown: {              // optional: for visual charts
+            5: Number,
+            4: Number,
+            3: Number,
+            2: Number,
+            1: Number
+        },
+        lastRatedAt: Date,        // optional: track when last rating was submitted
+        ratedUsers: [             // optional: store individual rating info
+            {
+                userId: Schema.Types.ObjectId,
+                rating: Number,
+                comment: String,
+                date: Date
+            }
+        ]
+    }
 
 }, { versionKey: false, id: false, timestamps: true })
 
