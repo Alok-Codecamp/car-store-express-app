@@ -4,9 +4,28 @@
 
 ## Overview
 
-### car store is a back end application designed to manage car order, built using Tyepscript, express.js, mongodb, mongoose. This application allows client to add new car data , retrive specific car data, update car data and delete car data. client also can create car orders and client can get total revenue from all orders.
+## 📘 Project Overview
 
-### moduler design pattern used for this application. This design pattern make easy to manage code of each file. In this application have two module car module and order module . The car module and the order module have inside module directory. Inside car module have all typescript file related car data. and thats in to 5 file thats are Interface, model, routes, controll and service. the same pattern use for orders module.
+**CarStore** is a backend application designed to manage car inventory and customer orders. Built with **TypeScript**, **Express.js**, **MongoDB**, and **Mongoose**, this API-driven project allows clients to perform full CRUD operations on car data and manage customer orders efficiently.
+
+### ✨ Features
+
+- Add, retrieve, update, and delete car information
+- Create and manage car orders
+- Calculate and retrieve total revenue from all orders
+
+### 🧱 Architectural Pattern
+
+The application follows a **Modular Design Pattern** to ensure clean separation of concerns, scalability, and maintainability. Each feature is encapsulated within its own module containing specific responsibility-based files.
+
+### 📦 Modules
+
+There are two main modules in this project:
+
+1. **Car Module** – Handles all operations related to car data
+2. **Order Module** – Manages order creation and revenue tracking
+
+Each module is placed inside the `src/modules/` directory and follows a consistent structure:
 
 # Routes
 
