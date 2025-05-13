@@ -27,39 +27,72 @@ There are two main modules in this project:
 
 Each module is placed inside the `src/modules/` directory and follows a consistent structure:
 
-# Routes
+## 🚀 API Endpoints
 
-## Method:GET
+Below is a list of available RESTful API routes for the **CarStore** backend. All endpoints are served from the base URL:
 
-### API for add car data : https://car-store-express-app.vercel.app/api/cars
+**Base URL:** `https://car-store-express-app.vercel.app/api`
 
-## Method:GET
+---
 
-### API for get All Car data :https://car-store-express-app.vercel.app/api/cars
+### 🚗 Car Routes
 
-## Method:GET
+#### 🔹 Add a New Car
 
-### API for query with brand, model and category : https://car-store-express-app.vercel.app/api/cars?searchTerm=SUV
+- **Method:** `POST`
+- **Endpoint:** `/cars`
+- **Description:** Adds a new car to the database.
 
-## Method:GET
+#### 🔹 Get All Cars
 
-### API for get specific car by id : https://car-store-express-app.vercel.app/api/cars/:carId
+- **Method:** `GET`
+- **Endpoint:** `/cars`
+- **Description:** Retrieves all car entries from the database.
 
-## Method:PUT
+#### 🔹 Search Cars by Brand, Model, or Category
 
-### Api for update specific Car data by id: https://car-store-express-app.vercel.app/api/cars/:carId
+- **Method:** `GET`
+- **Endpoint:** `/cars?searchTerm=YourSearchQuery`
+- **Example:** `/cars?searchTerm=SUV`
+- **Description:** Filters car results based on search criteria.
 
-## Method:DELETE
+#### 🔹 Get Car by ID
 
-### API for delete specific Car data by id: https://car-store-express-app.vercel.app/api/cars/:carId
+- **Method:** `GET`
+- **Endpoint:** `/cars/:carId`
+- **Description:** Retrieves a specific car using its unique ID.
 
-## Method:GET
+#### 🔹 Update Car by ID
 
-### API for create an order :https://car-store-express-app.vercel.app/api/orders
+- **Method:** `PUT`
+- **Endpoint:** `/cars/:carId`
+- **Description:** Updates details of a specific car using its ID.
 
-## Method:GET
+#### 🔹 Delete Car by ID
 
-### API for get revenue from all orders: https://car-store-express-app.vercel.app/api/orders/revenue
+- **Method:** `DELETE`
+- **Endpoint:** `/cars/:carId`
+- **Description:** Deletes a specific car from the database using its ID.
+
+---
+
+### 📦 Order Routes
+
+#### 🔹 Create an Order
+
+- **Method:** `POST`
+- **Endpoint:** `/orders`
+- **Description:** Creates a new order for a selected car.
+
+#### 🔹 Get Total Revenue
+
+- **Method:** `GET`
+- **Endpoint:** `/orders/revenue`
+- **Description:** Calculates and returns total revenue generated from all orders.
+
+---
+
+📌 Make sure to include appropriate headers (like `Content-Type: application/json`) and pass valid data when using POST or PUT methods.
 
 ## CarStore – Tech Stack Overview
 
